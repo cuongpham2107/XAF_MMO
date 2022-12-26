@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <ListView Id="Division_People_ListView" DetailViewID="Personnel_DetailView_NoNested" />
+  </Views>
+</Application>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <BOModel Id="BOModel">
+    <Class Name="DXApplication.Module.BusinessObjects.PersistentClass">
+      <OwnMembers Id="OwnMembers">
+        <Member Name="DateOfBirth" GroupInterval="None" />
+      </OwnMembers>
+    </Class>
+  </BOModel>
+</Application>

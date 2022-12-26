@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <DetailView Id="Personnel_DetailView_NoNested" AllowDelete="False" AllowEdit="False" AllowNew="False">
+      <Layout Id="Layout">
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="Jobs_Group" Removed="True" />
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Division_People_ListView" DetailViewID="Personnel_DetailView_NoNested" />
+  </Views>
+</Application>

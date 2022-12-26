@@ -1,0 +1,54 @@
+﻿@using DevExpress.Blazor
+@using DevExpress.ExpressApp.Blazor
+@using DevExpress.ExpressApp.Blazor.Templates
+@using DevExpress.ExpressApp.Blazor.Services
+
+@inherits FrameTemplateComponentBase<MypePopupWindowTemplate>
+@inject ILoadingIndicatorProvider LoadingIndicatorProvider
+
+<DxPopup Visible="true"
+         ShowCloseButton="false"
+         CloseOnEscape="false"
+         CloseOnOutsideClick="false"
+         Scrollable="true"
+         ShowFooter="true"
+         MinWidth="@FrameTemplate.MinWidth"
+         MinHeight="@FrameTemplate.MinHeight"
+         Width="@FrameTemplate.Width"
+         Height="@FrameTemplate.Height"
+         MaxWidth="@FrameTemplate.MaxWidth"
+         MaxHeight="@FrameTemplate.MaxHeight"
+         CssClass="xafPopup"
+         Shown="OnShown">
+    <HeaderContentTemplate>
+        <ViewCaptionComponent WindowCaption="@FrameTemplate" />
+        
+    </HeaderContentTemplate>
+    <BodyContentTemplate>
+        <div class="main">
+            @if (FrameTemplate.IsActionsToolbarVisible && FrameTemplate.Toolbar.ContainsVisibleActionControl()) {
+                <div class="main-toolbar px-1 pt-1 pb-2">
+                    @FrameTemplate.Toolbar.GetComponentContent()
+                </div>
+            }
+            <div class="main-content">
+                <ViewSiteComponent View="@FrameTemplate.View" />
+            </div>
+        </div>
+    </BodyContentTemplate>
+    <FooterContentTemplate>
+        @FrameTemplate.BottomToolbar.GetComponentContent()
+    </FooterContentTemplate>
+</DxPopup>
+
+@code {
+    public static RenderFragment Create(MypePopupWindowTemplate popupWindowTemplate) => @<MypePopupWindowTemplateComponent FrameTemplate="@popupWindowTemplate" />;
+    private const string Reason = "Popup Showing";
+    protected override void OnInitialized() {
+        base.OnInitialized();
+        LoadingIndicatorProvider.Hold(Reason);
+    }
+    protected void OnShown() {
+        LoadingIndicatorProvider.Release(Reason);
+    }
+}

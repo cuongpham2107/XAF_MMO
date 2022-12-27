@@ -1,6 +1,4 @@
-﻿using DevExpress.ExpressApp;
-using DevExpress.ExpressApp.DC;
-using DevExpress.ExpressApp.Model;
+﻿using DevExpress.ExpressApp.DC;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Xpo;
@@ -11,8 +9,8 @@ namespace DXApplication.Module.BusinessObjects;
 [DefaultClassOptions]
 //[CustomListView(AllowEdit = true, AllowDelete = false, AllowNew = true)]
 //[CustomDetailView(null, AllowDelete = false, AllowNew = false, AllowEdit = true)]
-[CustomDetailView(null, FieldsToRemove = new[] {"People"})]
-public class Division : BaseObject, IFullInline {
+//[CustomDetailView(null, FieldsToRemove = new[] {"People"})]
+public class Division : BaseObject, IListViewInline {
     public Division(Session session) : base(session) { }
 
     string _name;
@@ -43,7 +41,7 @@ public class Division : BaseObject, IFullInline {
 //[CustomDetailView("Personnel_DetailView_NoJobs", FieldsToRemove = new[] { "Jobs" }, AllowEdit = false)]
 //[CustomListView(AllowDelete = true, AllowNew = true)]
 //[CustomDetailView(null, FieldsToRemove = new[] { "Jobs" })]
-public class Personnel : BaseObject, IFullPopup, IDetailViewPopupReadonly { 
+public class Personnel : BaseObject, IListViewPopup {
 
     public Personnel(Session session) : base(session) { }
 
@@ -96,7 +94,7 @@ public class Personnel : BaseObject, IFullPopup, IDetailViewPopupReadonly {
 }
 
 [DefaultClassOptions]
-public class Job : BaseObject, IFullPopup, INestedListViewNewActionInline, INestedListViewEditActionInline  {
+public class Job : BaseObject, INestedListViewInline {
     public Job(Session session) : base(session) { }
 
     string _name;

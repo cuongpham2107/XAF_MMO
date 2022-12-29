@@ -41,8 +41,8 @@ public sealed class DXApplicationBlazorModule : ModuleBase {
         application.LinkNewObjectToParentImmediately = true;
 
         // TODO: thay đổi listview và detailview trong application model (thay vì dùng controller)
-        application.ListViewCreating += ApplicationController.ListViewCreating;
-        application.DetailViewCreating += ApplicationController.DetailViewCreating;
+        //application.ListViewCreating += ApplicationController.ListViewCreating;
+        //application.DetailViewCreating += ApplicationController.DetailViewCreating;
     }
 
     

@@ -31,7 +31,7 @@ public class Division : BaseObject {
     [Association("Division-People")]
     [CustomNestedListView(
         AllowEdit = true, AllowLink = false, AllowUnlink = false,
-        FieldsToSort = new[] { "FullName", "DateOfBirth", "Phone" },
+        FieldsToSort = new[] { "FullName.", "DateOfBirth", "Phone." },
         FieldsToGroup = new[] { "Division" })]
 
     public XPCollection<Personnel> People {
@@ -47,7 +47,8 @@ public class Division : BaseObject {
 //[CustomDetailView(null, FieldsToRemove = new[] { "Jobs" })]
 //[CustomListView(FieldsToGroup = new[] { "Division" }, FieldsToSort = new[] { "DateOfBirth", "Address" })]
 //[Readonly(Fields = new[] {"FullName", "DateOfBirth", "Address"}, IsReversed = false)]
-[CustomDetailView(FieldsReadonly = new[] {"FullName", "Address"})]
+//[CustomDetailView(FieldsReadonly = new[] {"FullName", "Address"})]
+[CustomListView(ViewId = "Personnel_ListView_New")]
 public class Personnel : BaseObject {
 
     public Personnel(Session session) : base(session) { }

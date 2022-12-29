@@ -1,16 +1,25 @@
 ﻿using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Actions;
+using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.SystemModule;
 using DXApplication.Module.Extension;
 
 namespace DXApplication.Blazor.Extension; 
-public class ListViewPopupController : ViewController<ListView> {
-    public ListViewPopupController() {
+public class BlazorPopupController : ViewController<ListView> {
+    public BlazorPopupController() {
         TargetObjectType = typeof(IListViewPopup);
     }
 
     private NewObjectViewController _newController;
     private ListViewProcessCurrentObjectController _currentObjectController;
+
+    protected override void OnViewControlsCreated() {
+        base.OnViewControlsCreated();
+        if (View.Editor is DxGridListEditor gridListEditor) {
+            IDxGridAdapter dataGridAdapter = gridListEditor.GetGridAdapter();
+            dataGridAdapter.GridCommandColumnModel.Visible = false;
+        }
+    }
 
     protected override void OnActivated() {
         base.OnActivated();
@@ -39,5 +48,3 @@ public class ListViewPopupController : ViewController<ListView> {
         _currentObjectController.ProcessCurrentObjectAction.Execute -= ProcessCurrentObjectAction_Execute;
     }
 }
-
-

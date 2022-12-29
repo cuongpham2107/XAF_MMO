@@ -1,32 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DXApplication.Module.Extension;
 
-// List View interfaces
+/// <summary>
+/// Chuyển root list view thành dạng inline (không mở detail view)
+/// </summary>
 public interface IListViewInline { }
+
+/// <summary>
+/// Chuyển root list view thành dạng popup (mở detail view trên popup)
+/// </summary>
 public interface IListViewPopup { }
-public interface IListViewDisableNewAction { }
-public interface IListViewDisableDeleteAction { }
 
-// Nested List View interfaces
+/// <summary>
+/// Chuyển nested list view thành dạng inline (không mở detail view)
+/// </summary>
 public interface INestedListViewInline { }
-public interface INestedListViewDisableNewAction { }
-public interface INestedListViewDisableDeleteAction { }
-public interface INestedListViewDisableLinkAction { }
-public interface INestListViewDisableUnlinkAction { }
 
-// Detail View interfaces
-public interface IDetailViewDisableNewAction { }
-public interface IDetailViewDisableDeleteAction { }
-public interface IDetailViewPopupReadonly { }
-public interface IDetailViewReadonly { }
-public interface IDetailViewDisable { }
-public interface IDetailViewShowInPopup { }
-
-// Model interfaces
-public interface IModelDisableNewAction { }
-public interface IModelDisableDeleteAction { }
+/// <summary>
+/// Ẩn các controller không cần thiết trên domain component
+/// </summary>
+public interface IDomainComponent { }

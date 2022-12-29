@@ -7,20 +7,27 @@ using System.Threading.Tasks;
 namespace DXApplication.Module.Extension;
 
 /// <summary>
-/// Chỉ định tạo thêm detail view mới
+/// Điều chỉnh detail view
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class CustomDetailViewAttribute : Attribute {
+    /// <summary>
+    /// Nếu null sẽ tác động đến detail view mặc định.<br/>
+    /// Nếu khác null sẽ tạo detail view mới."
+    /// </summary>
     public string ViewId { get; set; } = null;
     public string[] FieldsToRemove { get; set; } = Array.Empty<string>();
     public string[] FieldsReadonly { get; set; } = Array.Empty<string>();
+    /// <summary>
+    /// <see langword="false"/> sẽ làm toàn bộ view thành readonly
+    /// </summary>
     public bool AllowEdit { get; set; } = true;
     public bool AllowDelete { get; set; } = true;
     public bool AllowNew { get; set; } = true;
 }
 
 /// <summary>
-/// Chỉ định detail view cho nested listview
+/// Điều chỉnh nested listview
 /// </summary>
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
 public class CustomNestedListViewAttribute : Attribute {
@@ -29,14 +36,33 @@ public class CustomNestedListViewAttribute : Attribute {
     /// </summary>
     public string DetailViewId { get; set; }
 
+    /// <summary>
+    /// Nếu null sẽ tác động đến list view mặc định.<br/>
+    /// Nếu khác null sẽ tạo list view mới."
+    /// </summary>
     public string ViewId { get; set; } = null;
 
+    /// <summary>
+    /// Những trường cần ẩn sẽ có index = -1<br/>.
+    /// Trường ẩn vẫn xuất hiện trên column chooser (và có thể cho hiển thị lại)
+    /// </summary>
     public string[] FieldsToHide { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Sẽ loại bỏ các trường này hoàn toàn, ở runtime không cho hiện lại được
+    /// </summary>
     public string[] FieldsToRemove { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Mặc định sẽ xếp tăng dần. Nếu muốn xếp giảm dần thêm dấu chấm (.) vào sau tên trường
+    /// </summary>
     public string[] FieldsToSort { get; set; } = Array.Empty<string>();
     public string[] FieldsToGroup { get; set; } = Array.Empty<string>();
 
-    public bool AllowEdit { get; set; } = true;
+    /// <summary>
+    /// <see langword="true"/> - bật inline edit
+    /// </summary>
+    public bool AllowEdit { get; set; } = false;
     public bool AllowDelete { get; set; } = true;
     public bool AllowNew { get; set; } = true;
     public bool AllowLink { get; set; } = true;
@@ -53,14 +79,34 @@ public class CustomListViewAttribute : Attribute {
     /// </summary>
     public string DetailViewId { get; set; }
 
+    /// <summary>
+    /// Nếu null sẽ tác động đến list view mặc định.<br/>
+    /// Nếu khác null sẽ tạo list view mới."
+    /// </summary>
     public string ViewId { get; set; } = null;
 
+    /// <summary>
+    /// Những trường cần ẩn sẽ có index = -1.<br/>
+    /// Trường ẩn vẫn xuất hiện trên column chooser (và có thể cho hiển thị lại)
+    /// </summary>
     public string[] FieldsToHide { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Sẽ loại bỏ các trường này hoàn toàn, ở runtime không cho hiện lại được
+    /// </summary>
     public string[] FieldsToRemove { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Mặc định sẽ xếp tăng dần.<br/>
+    /// Nếu muốn xếp giảm dần thêm dấu chấm (.) vào sau tên trường
+    /// </summary>
     public string[] FieldsToSort { get; set; } = Array.Empty<string>();
     public string[] FieldsToGroup { get; set; } = Array.Empty<string>();
 
-    public bool AllowEdit { get; set; } = true;
+    /// <summary>
+    /// <see langword="true"/> - bật inline edit
+    /// </summary>
+    public bool AllowEdit { get; set; } = false;
     public bool AllowDelete { get; set; } = true;
     public bool AllowNew { get; set; } = true;
     public bool AllowLink { get; set; } = true;
@@ -68,10 +114,14 @@ public class CustomListViewAttribute : Attribute {
 }
 
 /// <summary>
-/// Chỉ định một field là readonly
+/// Chỉ định class/field là readonly
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class)]
 public class ReadonlyAttribute : Attribute {
+    /// <summary>
+    /// Nếu true - các trường trong danh sách sẽ editable, các trường khác readonly.<br/>
+    /// Nếu false (mặc định) - các trường trong danh sách là readonly.
+    /// </summary>
     public bool IsReversed { get; set; } = false;
     public string[] Fields { get; set; } = Array.Empty<string>();
 }

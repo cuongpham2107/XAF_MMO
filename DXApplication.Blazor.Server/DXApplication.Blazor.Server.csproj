@@ -9,6 +9,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Controllers\ApplicationController.cs" />
+    <Compile Remove="Controllers\DetailViewController.cs" />
+    <Compile Remove="Controllers\ListViewController.cs" />
     <Compile Remove="Controllers\ModelNodeController.cs" />
   </ItemGroup>
   <ItemGroup>

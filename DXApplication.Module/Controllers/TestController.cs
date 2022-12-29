@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DXApplication.Module.Controllers;
+namespace DXApplication.Blazor.Controllers;
 public class TestController : ViewController {
 	public TestController() {
 		SimpleAction();

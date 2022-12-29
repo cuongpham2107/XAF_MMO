@@ -4,13 +4,13 @@ using DevExpress.Persistent.BaseImpl;
 using DevExpress.Xpo;
 using DXApplication.Module.Extension;
 
-namespace DXApplication.Module.BusinessObjects;
+namespace DXApplication.Blazor.BusinessObjects;
 
 [DefaultClassOptions]
 //[CustomListView(AllowEdit = true, AllowDelete = false, AllowNew = true)]
 //[CustomDetailView(null, AllowDelete = false, AllowNew = false, AllowEdit = true)]
-//[CustomDetailView(null, FieldsToRemove = new[] {"People"})]
-public class Division : BaseObject, IListViewInline {
+//[CustomDetailView("", FieldsToRemove = new[] {"People"})]
+public class Division : BaseObject {
     public Division(Session session) : base(session) { }
 
     string _name;
@@ -29,7 +29,11 @@ public class Division : BaseObject, IListViewInline {
 
     [XafDisplayName("")]
     [Association("Division-People")]
-    //[CustomNestedListView("Personnel_DetailView_NoJobs", AllowEdit = true, AllowLink = false, AllowUnlink = false)]
+    [CustomNestedListView(
+        AllowEdit = true, AllowLink = false, AllowUnlink = false,
+        FieldsToSort = new[] { "FullName", "DateOfBirth", "Phone" },
+        FieldsToGroup = new[] { "Division" })]
+
     public XPCollection<Personnel> People {
         get {
             return GetCollection<Personnel>(nameof(People));
@@ -41,12 +45,15 @@ public class Division : BaseObject, IListViewInline {
 //[CustomDetailView("Personnel_DetailView_NoJobs", FieldsToRemove = new[] { "Jobs" }, AllowEdit = false)]
 //[CustomListView(AllowDelete = true, AllowNew = true)]
 //[CustomDetailView(null, FieldsToRemove = new[] { "Jobs" })]
-public class Personnel : BaseObject, IListViewPopup {
+//[CustomListView(FieldsToGroup = new[] { "Division" }, FieldsToSort = new[] { "DateOfBirth", "Address" })]
+//[Readonly(Fields = new[] {"FullName", "DateOfBirth", "Address"}, IsReversed = false)]
+[CustomDetailView(FieldsReadonly = new[] {"FullName", "Address"})]
+public class Personnel : BaseObject {
 
     public Personnel(Session session) : base(session) { }
 
     string _fullName;
-    [XafDisplayName("")]
+    [XafDisplayName("")]    
     public string FullName {
         get => _fullName;
         set => SetPropertyValue(nameof(FullName), ref _fullName, value);

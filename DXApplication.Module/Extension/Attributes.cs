@@ -11,12 +11,9 @@ namespace DXApplication.Module.Extension;
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class CustomDetailViewAttribute : Attribute {
-    readonly string _viewId;
-    public CustomDetailViewAttribute(string viewId) {
-        _viewId = viewId;
-    }
-    public string ViewId => _viewId;
+    public string ViewId { get; set; } = null;
     public string[] FieldsToRemove { get; set; } = Array.Empty<string>();
+    public string[] FieldsReadonly { get; set; } = Array.Empty<string>();
     public bool AllowEdit { get; set; } = true;
     public bool AllowDelete { get; set; } = true;
     public bool AllowNew { get; set; } = true;
@@ -25,14 +22,19 @@ public class CustomDetailViewAttribute : Attribute {
 /// <summary>
 /// Chỉ định detail view cho nested listview
 /// </summary>
-[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
 public class CustomNestedListViewAttribute : Attribute {
-    readonly string _viewId;
-    public CustomNestedListViewAttribute(string viewId) {
-        _viewId = viewId;
-    }
+    /// <summary>
+    /// Chỉ định detail view nào sẽ được hiển thị khi click vào nested list view
+    /// </summary>
+    public string DetailViewId { get; set; }
 
-    public string DetailViewId => _viewId;
+    public string ViewId { get; set; } = null;
+
+    public string[] FieldsToHide { get; set; } = Array.Empty<string>();
+    public string[] FieldsToRemove { get; set; } = Array.Empty<string>();
+    public string[] FieldsToSort { get; set; } = Array.Empty<string>();
+    public string[] FieldsToGroup { get; set; } = Array.Empty<string>();
 
     public bool AllowEdit { get; set; } = true;
     public bool AllowDelete { get; set; } = true;
@@ -44,8 +46,20 @@ public class CustomNestedListViewAttribute : Attribute {
 /// <summary>
 /// Chỉ định các đặc tính của listview
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class CustomListViewAttribute : Attribute {
+    /// <summary>
+    /// Chỉ định detail view nào sẽ được hiển thị khi click vào nested list view
+    /// </summary>
+    public string DetailViewId { get; set; }
+
+    public string ViewId { get; set; } = null;
+
+    public string[] FieldsToHide { get; set; } = Array.Empty<string>();
+    public string[] FieldsToRemove { get; set; } = Array.Empty<string>();
+    public string[] FieldsToSort { get; set; } = Array.Empty<string>();
+    public string[] FieldsToGroup { get; set; } = Array.Empty<string>();
+
     public bool AllowEdit { get; set; } = true;
     public bool AllowDelete { get; set; } = true;
     public bool AllowNew { get; set; } = true;
@@ -58,19 +72,6 @@ public class CustomListViewAttribute : Attribute {
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class)]
 public class ReadonlyAttribute : Attribute {
-    private readonly bool _reversed;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="reversed">
-    /// Chỉ có tác dụng khi dùng cho class:
-    ///  -true => cả class thành readonly, trừ các trường chỉ định
-    ///  -false (mặc định) => cả class bình thường, các trường chỉ định thành readonly
-    /// </param>
-    public ReadonlyAttribute(bool reversed = false) {
-        _reversed = reversed;
-    }
-    public bool IsReversed => _reversed;
+    public bool IsReversed { get; set; } = false;
     public string[] Fields { get; set; } = Array.Empty<string>();
 }

@@ -9,6 +9,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Controllers\ModelNodeController.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Model.log" />
     <None Remove="Model.xafml" />
   </ItemGroup>

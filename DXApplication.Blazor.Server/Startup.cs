@@ -52,7 +52,7 @@ public class Startup {
                     options.AllowValidationDetailsAccess = false;
                 })
                 .AddViewVariants()
-                .Add<DXApplication.Module.DXApplicationModule>()
+                .Add<DXApplication.Blazor.DXApplicationModule>()
             	.Add<DXApplicationBlazorModule>();
             builder.ObjectSpaceProviders
                 .AddSecuredXpo((serviceProvider, options) => {
@@ -76,10 +76,10 @@ public class Startup {
                     options.RoleType = typeof(PermissionPolicyRole);
                     // ApplicationUser descends from PermissionPolicyUser and supports the OAuth authentication. For more information, refer to the following topic: https://docs.devexpress.com/eXpressAppFramework/402197
                     // If your application uses PermissionPolicyUser or a custom user type, set the UserType property as follows:
-                    options.UserType = typeof(DXApplication.Module.BusinessObjects.ApplicationUser);
+                    options.UserType = typeof(DXApplication.Blazor.BusinessObjects.ApplicationUser);
                     // ApplicationUserLoginInfo is only necessary for applications that use the ApplicationUser user type.
                     // If you use PermissionPolicyUser or a custom user type, comment out the following line:
-                    options.UserLoginInfoType = typeof(DXApplication.Module.BusinessObjects.ApplicationUserLoginInfo);
+                    options.UserLoginInfoType = typeof(DXApplication.Blazor.BusinessObjects.ApplicationUserLoginInfo);
                     options.UseXpoPermissionsCaching();
                 })
                 .AddPasswordAuthentication(options => {

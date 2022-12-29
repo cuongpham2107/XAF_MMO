@@ -1,1 +1,1 @@
-﻿namespace DXApplication.Module.Common;
+﻿namespace DXApplication.Blazor.Common;

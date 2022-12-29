@@ -4,7 +4,7 @@ using DevExpress.ExpressApp.Blazor.SystemModule;
 using DevExpress.ExpressApp.SystemModule;
 using DXApplication.Module.Extension;
 
-namespace DXApplication.Blazor.Server.Controllers;
+namespace DXApplication.Module.Server.Controllers;
 
 public class BlazorInlineRootController : BlazorInlineController {
     public BlazorInlineRootController() {

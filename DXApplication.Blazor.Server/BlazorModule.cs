@@ -1,6 +1,8 @@
 ﻿using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.Model.Core;
 using DevExpress.ExpressApp.Updating;
 using DevExpress.Persistent.BaseImpl;
+using DXApplication.Blazor.Extension;
 using System.ComponentModel;
 
 
@@ -25,5 +27,23 @@ public sealed class DXApplicationBlazorModule : ModuleBase {
         base.Setup(application);
         //application.CreateCustomModelDifferenceStore += Application_CreateCustomModelDifferenceStore;
         application.CreateCustomUserModelDifferenceStore += Application_CreateCustomUserModelDifferenceStore;
+
+        // TODO: tạo composite object space (để trộn lẫn domain component với business persistent class)
+        application.ObjectSpaceCreated += (sender, e) => {
+            if (e.ObjectSpace is CompositeObjectSpace compositeObjectSpace) {
+                if (compositeObjectSpace.Owner is not CompositeObjectSpace) {
+                    compositeObjectSpace.PopulateAdditionalObjectSpaces((XafApplication)sender);
+                }
+            }
+        };
+
+        // TODO: link object với với object cha ngay sau khi khởi tạo
+        application.LinkNewObjectToParentImmediately = true;
+
+        // TODO: thay đổi listview và detailview trong application model (thay vì dùng controller)
+        application.ListViewCreating += ApplicationController.ListViewCreating;
+        application.DetailViewCreating += ApplicationController.DetailViewCreating;
     }
+
+    
 }

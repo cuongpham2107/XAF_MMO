@@ -9,9 +9,9 @@ using DevExpress.Xpo;
 using DevExpress.ExpressApp.Xpo;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
-using DXApplication.Module.BusinessObjects;
+using DXApplication.Blazor.BusinessObjects;
 
-namespace DXApplication.Module.DatabaseUpdate;
+namespace DXApplication.Blazor.DatabaseUpdate;
 
 // For more typical usage scenarios, be sure to check out https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.Updating.ModuleUpdater
 public class Updater : ModuleUpdater {

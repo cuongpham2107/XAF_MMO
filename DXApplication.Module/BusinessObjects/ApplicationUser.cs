@@ -5,7 +5,7 @@ using DevExpress.ExpressApp.Security;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
 using DevExpress.Xpo;
 
-namespace DXApplication.Module.BusinessObjects;
+namespace DXApplication.Blazor.BusinessObjects;
 
 [MapInheritance(MapInheritanceType.ParentTable)]
 [DefaultProperty(nameof(UserName))]

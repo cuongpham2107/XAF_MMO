@@ -5,7 +5,7 @@ using DevExpress.ExpressApp.Updating;
 using DevExpress.ExpressApp.Xpo;
 using DXApplication.Module.Extension;
 
-namespace DXApplication.Module;
+namespace DXApplication.Blazor;
 
 public sealed class DXApplicationModule : ModuleBase {
     public DXApplicationModule() {
@@ -32,38 +32,22 @@ public sealed class DXApplicationModule : ModuleBase {
         RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.Validation.ValidationModule));
         RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.ViewVariantsModule.ViewVariantsModule));
     }
-    public override IEnumerable<ModuleUpdater> GetModuleUpdaters(IObjectSpace objectSpace, Version versionFromDB) {
-        ModuleUpdater updater = new DatabaseUpdate.Updater(objectSpace, versionFromDB);
-        return new ModuleUpdater[] { updater };
-    }
-    public override void Setup(XafApplication application) {
-        base.Setup(application);
-        // Manage various aspects of the application UI and behavior at the module level.
 
-        // TODO: tạo composite object space (để trộn lẫn domain component với business persistent class)
-        application.ObjectSpaceCreated += (sender, e) => {
-            if (e.ObjectSpace is CompositeObjectSpace compositeObjectSpace) {
-                if (compositeObjectSpace.Owner is not CompositeObjectSpace) {
-                    compositeObjectSpace.PopulateAdditionalObjectSpaces((XafApplication)sender);
-                }
-            }
-        };
-
-        // TODO: link object với với object cha ngay sau khi khởi tạo
-        application.LinkNewObjectToParentImmediately = true;
-
-        // TODO: thay đổi listview và detailview trong application model (thay vì dùng controller)
-        application.ListViewCreating += ApplicationController.ListViewCreating;
-        application.DetailViewCreating += ApplicationController.DetailViewCreating;
+    public override void AddGeneratorUpdaters(ModelNodesGeneratorUpdaters updaters) {
+        base.AddGeneratorUpdaters(updaters);
+        updaters.Add(new ModelNodeController());
     }
 
     public override void CustomizeTypesInfo(ITypesInfo typesInfo) {
         base.CustomizeTypesInfo(typesInfo);
         CalculatedPersistentAliasHelper.CustomizeTypesInfo(typesInfo);
     }
-
-    public override void AddGeneratorUpdaters(ModelNodesGeneratorUpdaters updaters) {
-        base.AddGeneratorUpdaters(updaters);
-        updaters.Add(new NodeGenerator());
+    public override IEnumerable<ModuleUpdater> GetModuleUpdaters(IObjectSpace objectSpace, Version versionFromDB) {
+        ModuleUpdater updater = new DatabaseUpdate.Updater(objectSpace, versionFromDB);
+        return new ModuleUpdater[] { updater };
+    }
+    public override void Setup(XafApplication application) {
+        base.Setup(application);
+        // Manage various aspects of the application UI and behavior at the module level.        
     }
 }

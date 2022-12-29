@@ -9,7 +9,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Extension\ApplicationController.cs" />
     <Compile Remove="Extension\CurrentObjectController.cs" />
+    <Compile Remove="Extension\DetailViewController.cs" />
+    <Compile Remove="Extension\ListViewController.cs" />
+    <Compile Remove="Extension\ListViewPopupController.cs" />
+    <Compile Remove="Extension\NodeGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Model.DesignedDiffs.xafml" />

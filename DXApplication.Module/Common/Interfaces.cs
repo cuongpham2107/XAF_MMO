@@ -4,5 +4,5 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DXApplication.Module.Common; 
+namespace DXApplication.Blazor.Common; 
 

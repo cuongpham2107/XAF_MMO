@@ -6,22 +6,14 @@ using DXApplication.Module.Extension;
 
 namespace DXApplication.Module.Server.Controllers;
 
-public class BlazorInlineRootController : BlazorInlineController {
-    public BlazorInlineRootController() {
-        TargetObjectType = typeof(IListViewInline);
-    }
-}
-
-public class BlazorInlineNestedController : BlazorInlineController {
-    public BlazorInlineNestedController() {
-        TargetObjectType = typeof(INestedListViewInline);
-    }
-}
-
 /// <summary>
 /// TODO: Tạo view inline hoàn toàn
 /// </summary>
-public abstract class BlazorInlineController : ViewController<ListView> {
+public class BlazorInlineController : ViewController<ListView> {
+
+    public BlazorInlineController() {
+        TargetObjectType = typeof(IListViewInline);
+    }
 
     private NewObjectViewController _newController;
     private ListViewProcessCurrentObjectController _currentObjectController;

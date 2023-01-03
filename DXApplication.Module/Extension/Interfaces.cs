@@ -14,11 +14,6 @@ public interface IListViewInline { }
 public interface IListViewPopup { }
 
 /// <summary>
-/// Chuyển nested list view thành dạng inline (không mở detail view)
-/// </summary>
-public interface INestedListViewInline { }
-
-/// <summary>
 /// Ẩn các controller không cần thiết trên domain component
 /// </summary>
 public interface IDomainComponent { }

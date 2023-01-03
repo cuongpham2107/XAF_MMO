@@ -1,4 +1,5 @@
-﻿using DevExpress.ExpressApp;
+﻿using DevExpress.Blazor;
+using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.SystemModule;
@@ -16,13 +17,13 @@ public class BlazorListViewController : ViewController<ListView> {
         //TODO: điều chỉnh cách hiển thị của DxGridListEditor
         if (View.Editor is DxGridListEditor gridListEditor) {
             IDxGridAdapter dataGridAdapter = gridListEditor.GetGridAdapter();
-            dataGridAdapter.GridModel.ColumnResizeMode = DevExpress.Blazor.GridColumnResizeMode.NextColumn;
-            dataGridAdapter.GridModel.ShowGroupPanel = true;
-            dataGridAdapter.GridModel.FooterDisplayMode = DevExpress.Blazor.GridFooterDisplayMode.Auto;
+            dataGridAdapter.GridModel.ColumnResizeMode = GridColumnResizeMode.NextColumn;            
+            dataGridAdapter.GridModel.FooterDisplayMode = GridFooterDisplayMode.Auto;
             dataGridAdapter.GridModel.AutoExpandAllGroupRows = true;
-            dataGridAdapter.GridModel.ShowFilterRow = true;
+            dataGridAdapter.GridModel.ShowFilterRow = true;            
+            dataGridAdapter.GridModel.ShowGroupPanel = true;
             dataGridAdapter.GridModel.ShowSearchBox = true;
-            dataGridAdapter.GridModel.EditNewRowPosition = DevExpress.Blazor.GridEditNewRowPosition.Top;
+            dataGridAdapter.GridModel.EditNewRowPosition = GridEditNewRowPosition.Top;
             dataGridAdapter.GridCommandColumnModel.Visible = true;
             dataGridAdapter.GridCommandColumnModel.ShowInColumnChooser = true;
             dataGridAdapter.GridSelectionColumnModel.ShowInColumnChooser = true;

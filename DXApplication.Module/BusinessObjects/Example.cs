@@ -49,7 +49,7 @@ public class Division : BaseObject {
 //[Readonly(Fields = new[] {"FullName", "DateOfBirth", "Address"}, IsReversed = false)]
 //[CustomDetailView(FieldsReadonly = new[] {"FullName", "Address"})]
 [CustomListView(ViewId = "Personnel_ListView_New")]
-public class Personnel : BaseObject {
+public class Personnel : BaseObject, IListViewPopup {
 
     public Personnel(Session session) : base(session) { }
 
@@ -94,6 +94,7 @@ public class Personnel : BaseObject {
 
     [XafDisplayName("")]
     [Association("Personnel-Jobs")]
+    [CustomNestedListView(AllowEdit = true)]
     public XPCollection<Job> Jobs {
         get {
             return GetCollection<Job>(nameof(Jobs));
@@ -102,7 +103,7 @@ public class Personnel : BaseObject {
 }
 
 [DefaultClassOptions]
-public class Job : BaseObject, INestedListViewInline {
+public class Job : BaseObject, IListViewInline {
     public Job(Session session) : base(session) { }
 
     string _name;

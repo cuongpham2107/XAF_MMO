@@ -6,7 +6,16 @@
       <Action Id="Refresh" PaintStyle="Image" />
     </Actions>
   </ActionDesign>
-  <NavigationItems NavigationStyle="Accordion" />
+  <NavigationItems NavigationStyle="Accordion" StartupNavigationItem="My Dashboard">
+    <Items>
+      <DashboardNavigationItem Id="My Dashboard" Caption="Trang chủ" DashboardTitle="My Dashboard" Index="0" IsNewNode="True" />
+      <Item Id="Default">
+        <Items>
+          <Item Id="Settings" ImageName="ScatterChartLabelOptions" ViewId="ModelDifference_ListView" Caption="Settings" IsNewNode="True" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
   <SchemaModules>
     <SchemaModule Name="CloneObjectModule" Version="22.2.3.0" IsNewNode="True" />
     <SchemaModule Name="SystemModule" Version="22.2.3.0" IsNewNode="True" />

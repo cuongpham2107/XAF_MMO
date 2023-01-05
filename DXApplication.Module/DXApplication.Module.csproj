@@ -9,6 +9,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Controllers\TestController.cs" />
     <Compile Remove="Extension\ApplicationController.cs" />
     <Compile Remove="Extension\CurrentObjectController.cs" />
     <Compile Remove="Extension\DetailViewController.cs" />
@@ -39,5 +40,21 @@
     <PackageReference Include="DevExpress.ExpressApp.Xpo" Version="22.2.3" />
     <PackageReference Include="DevExpress.Persistent.Base" Version="22.2.3" />
     <PackageReference Include="DevExpress.Persistent.BaseImpl.Xpo" Version="22.2.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 </Project>

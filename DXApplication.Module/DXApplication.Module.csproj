@@ -16,6 +16,7 @@
     <Compile Remove="Extension\ListViewController.cs" />
     <Compile Remove="Extension\ListViewPopupController.cs" />
     <Compile Remove="Extension\NodeGenerator.cs" />
+    <Compile Remove="Extension\_Draft.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Model.DesignedDiffs.xafml" />

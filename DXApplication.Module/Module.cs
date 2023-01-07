@@ -41,6 +41,15 @@ public sealed class DXApplicationModule : ModuleBase {
     public override void CustomizeTypesInfo(ITypesInfo typesInfo) {
         base.CustomizeTypesInfo(typesInfo);
         CalculatedPersistentAliasHelper.CustomizeTypesInfo(typesInfo);
+
+        foreach (var type in XafTypesInfo.Instance.PersistentTypes) {
+            foreach (var member in type.Members) {
+                if (!member.IsList) {
+                    member.AddAttribute(new DetailViewLayoutAttribute("Chi tiết", 0));
+                }
+
+            }
+        }
     }
     public override IEnumerable<ModuleUpdater> GetModuleUpdaters(IObjectSpace objectSpace, Version versionFromDB) {
         ModuleUpdater updater = new DatabaseUpdate.Updater(objectSpace, versionFromDB);

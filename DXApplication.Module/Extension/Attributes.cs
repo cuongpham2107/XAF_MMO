@@ -27,49 +27,6 @@ public class CustomDetailViewAttribute : Attribute {
 }
 
 /// <summary>
-/// Điều chỉnh nested listview
-/// </summary>
-[AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-public class CustomNestedListViewAttribute : Attribute {
-    /// <summary>
-    /// Chỉ định detail view nào sẽ được hiển thị khi click vào nested list view
-    /// </summary>
-    public string DetailViewId { get; set; }
-
-    /// <summary>
-    /// Nếu null sẽ tác động đến list view mặc định.<br/>
-    /// Nếu khác null sẽ tạo list view mới."
-    /// </summary>
-    public string ViewId { get; set; } = null;
-
-    /// <summary>
-    /// Những trường cần ẩn sẽ có index = -1<br/>.
-    /// Trường ẩn vẫn xuất hiện trên column chooser (và có thể cho hiển thị lại)
-    /// </summary>
-    public string[] FieldsToHide { get; set; } = Array.Empty<string>();
-
-    /// <summary>
-    /// Sẽ loại bỏ các trường này hoàn toàn, ở runtime không cho hiện lại được
-    /// </summary>
-    public string[] FieldsToRemove { get; set; } = Array.Empty<string>();
-
-    /// <summary>
-    /// Mặc định sẽ xếp tăng dần. Nếu muốn xếp giảm dần thêm dấu chấm (.) vào sau tên trường
-    /// </summary>
-    public string[] FieldsToSort { get; set; } = Array.Empty<string>();
-    public string[] FieldsToGroup { get; set; } = Array.Empty<string>();
-
-    /// <summary>
-    /// <see langword="true"/> - bật inline edit
-    /// </summary>
-    public bool AllowEdit { get; set; } = false;
-    public bool AllowDelete { get; set; } = true;
-    public bool AllowNew { get; set; } = true;
-    public bool AllowLink { get; set; } = true;
-    public bool AllowUnlink { get; set; } = true;
-}
-
-/// <summary>
 /// Chỉ định các đặc tính của listview
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
@@ -109,8 +66,58 @@ public class CustomListViewAttribute : Attribute {
     public bool AllowEdit { get; set; } = false;
     public bool AllowDelete { get; set; } = true;
     public bool AllowNew { get; set; } = true;
-    public bool AllowLink { get; set; } = true;
-    public bool AllowUnlink { get; set; } = true;
+    public bool AllowLink { get; set; } = false;
+    public bool AllowUnlink { get; set; } = false;
+}
+
+/// <summary>
+/// Điều chỉnh nested listview
+/// </summary>
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class CustomNestedListViewAttribute : Attribute {
+    public CustomNestedListViewAttribute(string collectionProperty) {
+        _collectionProperty = collectionProperty;
+    }
+
+    private readonly string _collectionProperty;
+    public string CollectionProperty => _collectionProperty;
+
+    /// <summary>
+    /// Chỉ định detail view nào sẽ được hiển thị khi click vào nested list view
+    /// </summary>
+    public string DetailViewId { get; set; }
+
+    /// <summary>
+    /// Nếu null sẽ tác động đến list view mặc định.<br/>
+    /// Nếu khác null sẽ tạo list view mới."
+    /// </summary>
+    //public string ViewId { get; set; } = null;
+
+    /// <summary>
+    /// Những trường cần ẩn sẽ có index = -1<br/>.
+    /// Trường ẩn vẫn xuất hiện trên column chooser (và có thể cho hiển thị lại)
+    /// </summary>
+    public string[] FieldsToHide { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Sẽ loại bỏ các trường này hoàn toàn, ở runtime không cho hiện lại được
+    /// </summary>
+    public string[] FieldsToRemove { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Mặc định sẽ xếp tăng dần. Nếu muốn xếp giảm dần thêm dấu chấm (.) vào sau tên trường
+    /// </summary>
+    public string[] FieldsToSort { get; set; } = Array.Empty<string>();
+    public string[] FieldsToGroup { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// <see langword="true"/> - bật inline edit
+    /// </summary>
+    public bool AllowEdit { get; set; } = false;
+    public bool AllowDelete { get; set; } = true;
+    public bool AllowNew { get; set; } = true;
+    public bool AllowLink { get; set; } = false;
+    public bool AllowUnlink { get; set; } = false;
 }
 
 /// <summary>

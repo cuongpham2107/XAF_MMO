@@ -6,11 +6,15 @@ using DXApplication.Module.Extension;
 
 namespace DXApplication.Blazor.BusinessObjects;
 
+/// <summary>
+/// Class for company division
+/// </summary>
 [DefaultClassOptions]
-//[CustomListView(AllowEdit = true, AllowDelete = false, AllowNew = true)]
-//[CustomDetailView(null, AllowDelete = false, AllowNew = false, AllowEdit = true)]
-//[CustomDetailView("", FieldsToRemove = new[] {"People"})]
-public class Division : BaseObject {
+[CustomDetailView(FieldsToRemove = new[] { nameof(People) })]
+[CustomDetailView(ViewId = $"{nameof(Division)}_DetailView_Full")]
+[CustomListView(DetailViewId = $"{nameof(Division)}_DetailView_Full")]
+[CustomNestedListView(nameof(People))]
+public class Division : BaseObject, IListViewInline {
     public Division(Session session) : base(session) { }
 
     string _name;
@@ -29,11 +33,6 @@ public class Division : BaseObject {
 
     [XafDisplayName("")]
     [Association("Division-People")]
-    [CustomNestedListView(
-        AllowEdit = true, AllowLink = false, AllowUnlink = false,
-        FieldsToSort = new[] { "FullName.", "DateOfBirth", "Phone." },
-        FieldsToGroup = new[] { "Division" })]
-
     public XPCollection<Personnel> People {
         get {
             return GetCollection<Personnel>(nameof(People));
@@ -41,20 +40,21 @@ public class Division : BaseObject {
     }
 }
 
+/// <summary>
+/// Class for personnel
+/// </summary>
 [DefaultClassOptions]
-//[CustomDetailView("Personnel_DetailView_NoJobs", FieldsToRemove = new[] { "Jobs" }, AllowEdit = false)]
-//[CustomListView(AllowDelete = true, AllowNew = true)]
-//[CustomDetailView(null, FieldsToRemove = new[] { "Jobs" })]
-//[CustomListView(FieldsToGroup = new[] { "Division" }, FieldsToSort = new[] { "DateOfBirth", "Address" })]
-//[Readonly(Fields = new[] {"FullName", "DateOfBirth", "Address"}, IsReversed = false)]
-//[CustomDetailView(FieldsReadonly = new[] {"FullName", "Address"})]
-[CustomListView(ViewId = "Personnel_ListView_New")]
-public class Personnel : BaseObject, IListViewPopup {
+[CustomDetailView(FieldsToRemove = new[] { nameof(Jobs), nameof(Resources) })]
+[CustomDetailView(ViewId = $"{nameof(Personnel)}_DetailView_Full")]
+[CustomListView(DetailViewId = $"{nameof(Personnel)}_DetailView_Full")]
+[CustomNestedListView(nameof(Jobs))]
+[CustomNestedListView(nameof(Resources))]
+public class Personnel : BaseObject {
 
     public Personnel(Session session) : base(session) { }
 
     string _fullName;
-    [XafDisplayName("")]    
+    [XafDisplayName("")]
     public string FullName {
         get => _fullName;
         set => SetPropertyValue(nameof(FullName), ref _fullName, value);
@@ -94,16 +94,26 @@ public class Personnel : BaseObject, IListViewPopup {
 
     [XafDisplayName("")]
     [Association("Personnel-Jobs")]
-    [CustomNestedListView(AllowEdit = true)]
     public XPCollection<Job> Jobs {
         get {
             return GetCollection<Job>(nameof(Jobs));
         }
     }
+
+    [XafDisplayName("")]
+    [Association("Personnel-Resources")]
+    public XPCollection<Resource> Resources {
+        get {
+            return GetCollection<Resource>(nameof(Resources));
+        }
+    }
 }
 
+/// <summary>
+/// Job for person
+/// </summary>
 [DefaultClassOptions]
-public class Job : BaseObject, IListViewInline {
+public class Job : BaseObject {
     public Job(Session session) : base(session) { }
 
     string _name;
@@ -115,6 +125,7 @@ public class Job : BaseObject, IListViewInline {
 
     string _description;
     [XafDisplayName("")]
+    [Size(-1)]
     public string Description {
         get => _description;
         set => SetPropertyValue(nameof(Description), ref _description, value);
@@ -140,5 +151,49 @@ public class Job : BaseObject, IListViewInline {
     public Personnel Personnel {
         get => _personnel;
         set => SetPropertyValue(nameof(Personnel), ref _personnel, value);
+    }
+}
+
+/// <summary>
+/// Resource for person
+/// </summary>
+[DefaultClassOptions]
+public class Resource : BaseObject {
+    public Resource(Session session) : base(session) { }
+
+    string _name;
+    [XafDisplayName("")]
+    public string Name {
+        get => _name;
+        set => SetPropertyValue(nameof(Name), ref _name, value);
+    }
+
+    FileData _fileData;
+    [XafDisplayName("")]
+    public FileData FileData {
+        get => _fileData;
+        set => SetPropertyValue(nameof(FileData), ref _fileData, value);
+    }
+
+    string _link;
+    [XafDisplayName("")]
+    public string Link {
+        get => _link;
+        set => SetPropertyValue(nameof(Link), ref _link, value);
+    }
+
+    Personnel _personnel;
+    [XafDisplayName("")]
+    [Association("Personnel-Resources")]
+    public Personnel Personnel {
+        get => _personnel;
+        set => SetPropertyValue(nameof(Personnel), ref _personnel, value);
+    }
+
+    string _description;
+    [XafDisplayName("")]
+    public string Description {
+        get => _description;
+        set => SetPropertyValue(nameof(Description), ref _description, value);
     }
 }

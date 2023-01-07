@@ -33,6 +33,7 @@ public class DXApplicationBlazorApplication : BlazorApplication {
         if (context == TemplateContext.ApplicationWindow) return new Templates.MypeApplicationWindowTemplate { AboutInfoString = AboutInfo.Instance.GetAboutInfoString(this) };
         if (context == TemplateContext.NestedFrame) return new Templates.MypeNestedFrameTemplate();
         if (context == TemplateContext.PopupWindow) return new Templates.MypePopupWindowTemplate();
+        if(context == TemplateContext.LogonWindow) return new Templates.MyLogonWindowTemplate();
         return base.CreateDefaultTemplate(context);
     }
 

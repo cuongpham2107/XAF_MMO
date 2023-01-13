@@ -102,9 +102,9 @@ public class Personnel : BaseObject {
 
     [XafDisplayName("")]
     [Association("Personnel-Resources")]
-    public XPCollection<Resource> Resources {
+    public XPCollection<Document> Resources {
         get {
-            return GetCollection<Resource>(nameof(Resources));
+            return GetCollection<Document>(nameof(Resources));
         }
     }
 }
@@ -113,7 +113,7 @@ public class Personnel : BaseObject {
 /// Job for person
 /// </summary>
 [DefaultClassOptions]
-public class Job : BaseObject {
+public class Job : BaseObject, IListViewPopup, INestedListViewInline {
     public Job(Session session) : base(session) { }
 
     string _name;
@@ -158,8 +158,8 @@ public class Job : BaseObject {
 /// Resource for person
 /// </summary>
 [DefaultClassOptions]
-public class Resource : BaseObject {
-    public Resource(Session session) : base(session) { }
+public class Document : BaseObject,IListViewPopup, INestedListViewInline {
+    public Document(Session session) : base(session) { }
 
     string _name;
     [XafDisplayName("")]

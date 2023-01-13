@@ -4,7 +4,7 @@ using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.SystemModule;
 using DXApplication.Module.Extension;
 
-namespace DXApplication.Blazor.Extension; 
+namespace DXApplication.Blazor.Server.Controllers; 
 public class BlazorPopupController : ViewController<ListView> {
     public BlazorPopupController() {
         TargetObjectType = typeof(IListViewPopup);

@@ -4,7 +4,24 @@ using DevExpress.ExpressApp.Blazor.SystemModule;
 using DevExpress.ExpressApp.SystemModule;
 using DXApplication.Module.Extension;
 
-namespace DXApplication.Module.Server.Controllers;
+namespace DXApplication.Blazor.Server.Controllers;
+
+//TODO: dành cho view cụ thể (có View ID)
+//public class BlazorViewInlineController : BlazorInlineController {
+//    public BlazorViewInlineController() {
+//        TargetViewId = "";
+//    }
+//}
+
+/// <summary>
+/// TODO: Tạo nested list view inline
+/// </summary>
+public class BlazorNestedInlineController : BlazorInlineController {
+    public BlazorNestedInlineController() {
+        TargetObjectType = typeof(INestedListViewInline);
+        TargetViewNesting = Nesting.Nested;
+    }
+}
 
 /// <summary>
 /// TODO: Tạo view inline hoàn toàn
@@ -13,6 +30,7 @@ public class BlazorInlineController : ViewController<ListView> {
 
     public BlazorInlineController() {
         TargetObjectType = typeof(IListViewInline);
+        TargetViewNesting = Nesting.Root;
     }
 
     private NewObjectViewController _newController;

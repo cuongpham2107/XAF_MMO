@@ -2,7 +2,7 @@
 using DevExpress.ExpressApp.SystemModule;
 using DXApplication.Module.Extension;
 
-namespace DXApplication.Blazor.Extension;
+namespace DXApplication.Blazor.Server.Controllers;
 
 
 public class DomainComponentController : ViewController {

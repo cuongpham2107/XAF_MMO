@@ -1,5 +1,6 @@
 ﻿using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.DC;
+using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.Model.Core;
 using DevExpress.ExpressApp.Updating;
 using DevExpress.ExpressApp.Xpo;
@@ -42,14 +43,14 @@ public sealed class DXApplicationModule : ModuleBase {
         base.CustomizeTypesInfo(typesInfo);
         CalculatedPersistentAliasHelper.CustomizeTypesInfo(typesInfo);
 
-        foreach (var type in XafTypesInfo.Instance.PersistentTypes) {
-            foreach (var member in type.Members) {
-                if (!member.IsList) {
-                    member.AddAttribute(new DetailViewLayoutAttribute("Chi tiết", 0));
-                }
+        //foreach (var type in XafTypesInfo.Instance.PersistentTypes) {
+        //    foreach (var member in type.Members) {
+        //        if (!member.IsList) {
+        //            member.AddAttribute(new DetailViewLayoutAttribute("Chi tiết", 0));
+        //        }
 
-            }
-        }
+        //    }
+        //}
     }
     public override IEnumerable<ModuleUpdater> GetModuleUpdaters(IObjectSpace objectSpace, Version versionFromDB) {
         ModuleUpdater updater = new DatabaseUpdate.Updater(objectSpace, versionFromDB);

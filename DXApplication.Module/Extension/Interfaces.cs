@@ -9,6 +9,11 @@ namespace DXApplication.Module.Extension;
 public interface IListViewInline { }
 
 /// <summary>
+/// Chuyển nested list view thành dạng inline (không mở detail view)
+/// </summary>
+public interface INestedListViewInline { }
+
+/// <summary>
 /// Chuyển root list view thành dạng popup (mở detail view trên popup)
 /// </summary>
 public interface IListViewPopup { }
@@ -17,3 +22,4 @@ public interface IListViewPopup { }
 /// Ẩn các controller không cần thiết trên domain component
 /// </summary>
 public interface IDomainComponent { }
+

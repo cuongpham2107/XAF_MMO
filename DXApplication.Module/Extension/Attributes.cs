@@ -24,6 +24,8 @@ public class CustomDetailViewAttribute : Attribute {
     public bool AllowEdit { get; set; } = true;
     public bool AllowDelete { get; set; } = true;
     public bool AllowNew { get; set; } = true;
+
+    public bool Tabbed { get; set; } = false;
 }
 
 /// <summary>

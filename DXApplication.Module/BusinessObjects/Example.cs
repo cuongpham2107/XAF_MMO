@@ -1,4 +1,5 @@
 ﻿using DevExpress.ExpressApp.DC;
+using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Xpo;
@@ -11,10 +12,10 @@ namespace DXApplication.Blazor.BusinessObjects;
 /// </summary>
 [DefaultClassOptions]
 [CustomDetailView(FieldsToRemove = new[] { nameof(People) })]
-[CustomDetailView(ViewId = $"{nameof(Division)}_DetailView_Full")]
+[CustomDetailView(ViewId = $"{nameof(Division)}_DetailView_Full", Tabbed = true)]
 [CustomListView(DetailViewId = $"{nameof(Division)}_DetailView_Full")]
 [CustomNestedListView(nameof(People))]
-public class Division : BaseObject, IListViewInline {
+public class Division : BaseObject {
     public Division(Session session) : base(session) { }
 
     string _name;
@@ -33,11 +34,20 @@ public class Division : BaseObject, IListViewInline {
 
     [XafDisplayName("")]
     [Association("Division-People")]
+    [DetailViewLayout("Tabs", LayoutGroupType.TabbedGroup)]
     public XPCollection<Personnel> People {
         get {
             return GetCollection<Personnel>(nameof(People));
         }
     }
+
+    //[XafDisplayName("")]
+    //[Association("Division-Properties")]
+    //public XPCollection<Property> Properties {
+    //    get {
+    //        return GetCollection<Property>(nameof(Properties));
+    //    }
+    //}
 }
 
 /// <summary>
@@ -45,7 +55,7 @@ public class Division : BaseObject, IListViewInline {
 /// </summary>
 [DefaultClassOptions]
 [CustomDetailView(FieldsToRemove = new[] { nameof(Jobs), nameof(Resources) })]
-[CustomDetailView(ViewId = $"{nameof(Personnel)}_DetailView_Full")]
+[CustomDetailView(ViewId = $"{nameof(Personnel)}_DetailView_Full", Tabbed = true)]
 [CustomListView(DetailViewId = $"{nameof(Personnel)}_DetailView_Full")]
 [CustomNestedListView(nameof(Jobs))]
 [CustomNestedListView(nameof(Resources))]
@@ -195,5 +205,25 @@ public class Document : BaseObject,IListViewPopup, INestedListViewInline {
     public string Description {
         get => _description;
         set => SetPropertyValue(nameof(Description), ref _description, value);
+    }
+}
+
+[DefaultClassOptions]
+public class Property : BaseObject {
+    public Property(Session session) : base(session) { }
+
+    string _name;
+    [XafDisplayName("")]
+    public string Name {
+        get => _name;
+        set => SetPropertyValue(nameof(Name), ref _name, value);
+    }
+
+    Division _division;
+    [XafDisplayName("")]
+    //[Association("Division-Properties")]
+    public Division Division {
+        get => _division;
+        set => SetPropertyValue(nameof(Division), ref _division, value);
     }
 }

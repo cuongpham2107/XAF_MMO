@@ -1,14 +1,26 @@
-﻿using DevExpress.Data;
+﻿using DevExpress.CodeParser;
+using DevExpress.Data;
+using DevExpress.DirectX.Common.DirectWrite;
 using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.Model.Core;
 using DevExpress.ExpressApp.Model.NodeGenerators;
 using DevExpress.XtraScheduler.Native;
+using DevExpress.XtraSpreadsheet.Model.History;
 using DXApplication.Module.Extension;
+using Microsoft.CodeAnalysis.Simplification;
 using System;
 using System.Linq;
 using System.Reflection;
 
 namespace DXApplication.Module.Extension;
+
+public class ModelNodeDetailController : ModelNodesGeneratorUpdater<ModelDetailViewLayoutNodesGenerator> {
+    public override void UpdateNode(ModelNode node) {
+        // Cast the 'node' parameter to IModelLayout
+        // to access the Layout node.        
+
+    }
+}
 
 public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGenerator> {
     public override void UpdateNode(ModelNode viewsNode) {
@@ -60,15 +72,51 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
                 foreach (var f in attr.FieldsToRemove) {
                     detailViewNode.Items[f].Remove();
                 }
-                
+
                 detailViewNode.AllowDelete = attr.AllowDelete;
                 detailViewNode.AllowEdit = attr.AllowEdit;
                 detailViewNode.AllowNew = attr.AllowNew;
+
+                if (attr.Tabbed) {
+                    if (detailViewNode.GetNode("Layout") is IModelViewLayout layout) {
+                        var mainGroup = layout.GetNode("Main") as IModelLayoutGroup;
+                        if (mainGroup.GetNode("Tabs") is IModelTabbedGroup tabsGroup) {
+                            foreach (var tab in tabsGroup.GetNodes<IModelLayoutGroup>()) {
+                                tab.Index++;
+                            }
+                            var simpleEditors = layout.GetNode("Main").GetNode("SimpleEditors") as IModelLayoutGroup;
+                            simpleEditors.Caption = "Main";
+                            simpleEditors.Index = 0;
+                            simpleEditors.ShowCaption = true;
+                            var tabsNode = tabsGroup as ModelNode;
+                            var simpleEditorsNode = simpleEditors as ModelNode;
+                            tabsNode.AddClonedNode(simpleEditorsNode, simpleEditors.Id);
+                            simpleEditors.Remove();
+                            //var layoutNode = layout as ModelNode;
+                            //layoutNode.AddClonedNode(tabsNode, "Tabs");
+                            //tabsGroup.Remove();
+                            //layout.GetNode("Main").Remove();
+                        } else {
+                            
+                            var newTabsGroup = layout.AddNode<IModelTabbedGroup>("Tabs");
+                            ModelNode newTabsNode = (ModelNode)newTabsGroup;
+                            foreach (var node in mainGroup.GetNodes<IModelLayoutGroup>()) {
+                                ModelNode sourceNode = (ModelNode)node;
+                                if (sourceNode.Id == "SimpleEditors") {
+                                    ((IModelLayoutGroup)sourceNode).Caption = "Main";
+                                    ((IModelLayoutGroup)sourceNode).ShowCaption = true;
+                                }
+                                newTabsNode.AddClonedNode(sourceNode, sourceNode.Id);
+                            }
+                            mainGroup.Remove();
+                        }
+                    }
+                }
             }
         }
     }
 
-    
+
 
     /// <summary>
     /// Xử lý CustomListViewAttribute

@@ -37,6 +37,7 @@ public sealed class DXApplicationModule : ModuleBase {
     public override void AddGeneratorUpdaters(ModelNodesGeneratorUpdaters updaters) {
         base.AddGeneratorUpdaters(updaters);
         updaters.Add(new ModelNodeController());
+        updaters.Add(new ModelNodeDetailController());
     }
 
     public override void CustomizeTypesInfo(ITypesInfo typesInfo) {

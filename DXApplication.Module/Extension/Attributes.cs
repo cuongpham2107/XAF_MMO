@@ -61,6 +61,9 @@ public class CustomListViewAttribute : Attribute {
     /// </summary>
     public string[] FieldsToSort { get; set; } = Array.Empty<string>();
     public string[] FieldsToGroup { get; set; } = Array.Empty<string>();
+    public string[] FieldsToSum { get; set; } = Array.Empty<string>();
+
+    public string GroupSummary { get; set; }
 
     /// <summary>
     /// <see langword="true"/> - bật inline edit
@@ -111,6 +114,9 @@ public class CustomNestedListViewAttribute : Attribute {
     /// </summary>
     public string[] FieldsToSort { get; set; } = Array.Empty<string>();
     public string[] FieldsToGroup { get; set; } = Array.Empty<string>();
+    public string[] FieldsToSum { get; set; } = Array.Empty<string>();
+
+    public string GroupSummary { get; set; }
 
     /// <summary>
     /// <see langword="true"/> - bật inline edit

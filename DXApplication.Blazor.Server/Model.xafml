@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application>
+<Application Title="KennaTech JSC." Company="KennaTech JSC." Copyright="KennaTech JSC." Description="KennaTech JSC.">
   <ActionDesign>
     <Actions>
       <Action Id="DialogCancel" Caption="Đóng" />

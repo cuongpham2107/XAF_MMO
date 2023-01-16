@@ -79,37 +79,32 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
 
                 if (attr.Tabbed) {
                     if (detailViewNode.GetNode("Layout") is IModelViewLayout layout) {
+                        var layoutNode = layout as ModelNode;
                         var mainGroup = layout.GetNode("Main") as IModelLayoutGroup;
+                        mainGroup.ShowCaption = true;
+                        mainGroup.Caption = "Chi tiết";
+                        var mainNode = mainGroup as ModelNode;
+
                         if (mainGroup.GetNode("Tabs") is IModelTabbedGroup tabsGroup) {
                             foreach (var tab in tabsGroup.GetNodes<IModelLayoutGroup>()) {
                                 tab.Index++;
                             }
-                            var simpleEditors = layout.GetNode("Main").GetNode("SimpleEditors") as IModelLayoutGroup;
-                            simpleEditors.Caption = "Main";
-                            simpleEditors.Index = 0;
-                            simpleEditors.ShowCaption = true;
                             var tabsNode = tabsGroup as ModelNode;
-                            var simpleEditorsNode = simpleEditors as ModelNode;
-                            tabsNode.AddClonedNode(simpleEditorsNode, simpleEditors.Id);
-                            simpleEditors.Remove();
-                            //var layoutNode = layout as ModelNode;
-                            //layoutNode.AddClonedNode(tabsNode, "Tabs");
-                            //tabsGroup.Remove();
-                            //layout.GetNode("Main").Remove();
+                            layoutNode.AddClonedNode(tabsNode, tabsNode.Id);
+                            tabsGroup.Remove();
+
+                            tabsNode = layout.GetNode("Tabs") as ModelNode;
+                            tabsNode.AddClonedNode(mainNode, mainNode.Id);
+
                         } else {
-                            
-                            var newTabsGroup = layout.AddNode<IModelTabbedGroup>("Tabs");
-                            ModelNode newTabsNode = (ModelNode)newTabsGroup;
-                            foreach (var node in mainGroup.GetNodes<IModelLayoutGroup>()) {
-                                ModelNode sourceNode = (ModelNode)node;
-                                if (sourceNode.Id == "SimpleEditors") {
-                                    ((IModelLayoutGroup)sourceNode).Caption = "Main";
-                                    ((IModelLayoutGroup)sourceNode).ShowCaption = true;
-                                }
-                                newTabsNode.AddClonedNode(sourceNode, sourceNode.Id);
-                            }
-                            mainGroup.Remove();
+                            var tabsNode = layout.AddNode<IModelTabbedGroup>("Tabs") as ModelNode;
+                            var lastNode = mainGroup.GetNode(mainGroup.NodeCount - 1) as ModelNode;
+                            lastNode.Index = 1;
+                            tabsNode.AddClonedNode(lastNode, lastNode.Id);
+                            ((IModelLayoutGroup)lastNode).Remove();
+                            tabsNode.AddClonedNode(mainNode, mainNode.Id);
                         }
+                        mainGroup.Remove();
                     }
                 }
             }
@@ -139,6 +134,7 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
                 }
 
                 if (listviewNode != null) {
+                    listviewNode.GroupSummary = attr.GroupSummary;
 
                     listviewNode.AllowDelete = attr.AllowDelete;
                     listviewNode.AllowEdit = attr.AllowEdit;
@@ -168,6 +164,32 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
 
                     foreach (var f in attr.FieldsToRemove)
                         listviewNode.Columns[f].Remove();
+
+                    foreach (var field in attr.FieldsToSum) {
+                        if (field.Contains(':')) {
+                            var items = field.Split(":", StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries);
+                            var col = items[0];
+                            var sums = items[1].Split(",", StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries);
+                            foreach (var s in sums) {
+                                var column = listviewNode.Columns[col];
+                                if (column != null) {
+                                    var sum = column.Summary.AddNode<IModelColumnSummaryItem>(s);
+                                    sum.SummaryType = s.ToLower() switch {
+                                        "count" => SummaryType.Count,
+                                        "sum" => SummaryType.Sum,
+                                        "average" => SummaryType.Average,
+                                        "min" => SummaryType.Min,
+                                        "max" => SummaryType.Max,
+                                        _ => SummaryType.Count
+                                    };
+                                }
+                            }
+                        } else {
+                            var column = listviewNode.Columns[field];
+                            var sum = column.Summary.AddNode<IModelColumnSummaryItem>("Count");
+                            sum.SummaryType = SummaryType.Count;
+                        }
+                    }
                 }
             }
         }
@@ -195,6 +217,8 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
                         listviewNode.DetailView = detailView;
                     }
 
+                    listviewNode.GroupSummary = attr.GroupSummary;
+
                     listviewNode.AllowDelete = attr.AllowDelete;
                     listviewNode.AllowEdit = attr.AllowEdit;
                     listviewNode.AllowNew = attr.AllowNew;
@@ -218,6 +242,32 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
 
                     foreach (var f in attr.FieldsToRemove)
                         listviewNode.Columns[f].Remove();
+
+                    foreach (var field in attr.FieldsToSum) {
+                        if (field.Contains(':')) {
+                            var items = field.Split(":", StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries);
+                            var col = items[0];
+                            var sums = items[1].Split(",", StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries);
+                            foreach (var s in sums) {
+                                var column = listviewNode.Columns[col];
+                                if (column != null) {
+                                    var sum = column.Summary.AddNode<IModelColumnSummaryItem>(s);
+                                    sum.SummaryType = s.ToLower() switch {
+                                        "count" => SummaryType.Count,
+                                        "sum" => SummaryType.Sum,
+                                        "average" => SummaryType.Average,
+                                        "min" => SummaryType.Min,
+                                        "max" => SummaryType.Max,
+                                        _ => SummaryType.Count
+                                    };
+                                }
+                            }
+                        } else {
+                            var column = listviewNode.Columns[field];
+                            var sum = column.Summary.AddNode<IModelColumnSummaryItem>("Count");
+                            sum.SummaryType = SummaryType.Count;
+                        }
+                    }
                 }
             }
         }

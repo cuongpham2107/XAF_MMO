@@ -43,18 +43,24 @@ public class BlazorNestedInlineController : ViewController<ListView> {
     private async void ProcessCurrentObjectAction_Executing(object sender, System.ComponentModel.CancelEventArgs e) {
         if (View.AllowEdit) {
             e.Cancel = true;
-            var gridListEditor = View.Editor as DxGridListEditor;
-            var grid = gridListEditor.GetGridAdapter().GridInstance;
-            await grid?.StartEditDataItemAsync(View.CurrentObject);
+            if (View.Editor is DxGridListEditor gridListEditor) {
+                var grid = gridListEditor.GetGridAdapter().GridInstance;
+                if (grid != null) {
+                    await grid.StartEditDataItemAsync(View.CurrentObject);
+                }
+            }
         }
     }
 
     private async void NewObjectAction_Executing(object sender, System.ComponentModel.CancelEventArgs e) {
         if (View.AllowEdit) {
             e.Cancel = true;
-            var gridListEditor = View.Editor as DxGridListEditor;
-            var grid = gridListEditor.GetGridAdapter().GridInstance;
-            await grid?.StartEditNewRowAsync();
+            if (View.Editor is DxGridListEditor gridListEditor) {
+                var grid = gridListEditor.GetGridAdapter().GridInstance;
+                if (grid != null) {
+                    await grid.StartEditNewRowAsync();
+                }
+            }
         }
     }
 
@@ -98,18 +104,24 @@ public class BlazorInlineController : ViewController<ListView> {
     private async void ProcessCurrentObjectAction_Executing(object sender, System.ComponentModel.CancelEventArgs e) {
         if (View.AllowEdit) {
             e.Cancel = true;
-            var gridListEditor = View.Editor as DxGridListEditor;
-            var grid = gridListEditor.GetGridAdapter().GridInstance;
-            await grid?.StartEditDataItemAsync(View.CurrentObject);
+            if (View.Editor is DxGridListEditor gridListEditor) {
+                var grid = gridListEditor.GetGridAdapter().GridInstance;
+                if (grid != null) {
+                    await grid.StartEditDataItemAsync(View.CurrentObject);
+                }
+            }
         }
     }
 
     private async void NewObjectAction_Executing(object sender, System.ComponentModel.CancelEventArgs e) {
         if (View.AllowEdit) {
             e.Cancel = true;
-            var gridListEditor = View.Editor as DxGridListEditor;
-            var grid = gridListEditor.GetGridAdapter().GridInstance;
-            await grid?.StartEditNewRowAsync();
+            if (View.Editor is DxGridListEditor gridListEditor) {
+                var grid = gridListEditor.GetGridAdapter().GridInstance;
+                if (grid != null) {
+                    await grid.StartEditNewRowAsync();
+                }
+            }
         }
     }
 

@@ -1,9 +1,11 @@
-﻿using DevExpress.ExpressApp.DC;
+﻿using DevExpress.CodeParser;
+using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Xpo;
 using DXApplication.Module.Extension;
+using System.Linq.Expressions;
 
 namespace DXApplication.Blazor.BusinessObjects;
 
@@ -11,7 +13,8 @@ namespace DXApplication.Blazor.BusinessObjects;
 /// Class for personnel
 /// </summary>
 [DefaultClassOptions]
-[CustomDetailView(Tabbed =true)]
+[CustomDetailView(Tabbed = true)]
+//[CustomListViewColumnWidth(new[] { $"{nameof(FullName)}:20%", "Age:30", "DateOfBirth:80" })]
 //[CustomDetailView(FieldsToRemove = new[] { nameof(Jobs), nameof(Resources) })]
 //[CustomDetailView(ViewId = $"{nameof(Personnel)}_DetailView_Full", Tabbed = true)]
 //[CustomListView(DetailViewId = $"{nameof(Personnel)}_DetailView_Full",
@@ -48,7 +51,7 @@ public class Personnel : BaseObject {
 
     string _phone;
     [XafDisplayName("")]
-    [DetailViewLayout("Contact",1)]
+    [DetailViewLayout("Contact", 1)]
     public string Phone {
         get => _phone;
         set => SetPropertyValue(nameof(Phone), ref _phone, value);

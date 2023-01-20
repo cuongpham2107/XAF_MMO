@@ -14,7 +14,7 @@ namespace DXApplication.Blazor.BusinessObjects;
 [DefaultClassOptions]
 [CustomDetailView(FieldsToRemove = new[] { nameof(People) })]
 [CustomDetailView(ViewId = $"{nameof(Division)}_DetailView_Full", Tabbed = true)]
-[CustomListView(DetailViewId = $"{nameof(Division)}_DetailView_Full")]
+[CustomRootListView(DetailViewId = $"{nameof(Division)}_DetailView_Full")]
 [CustomNestedListView(nameof(People), FieldsToSum = new[] { "FullName:Count" })]
 public class Division : BaseObject {
     public Division(Session session) : base(session) { }

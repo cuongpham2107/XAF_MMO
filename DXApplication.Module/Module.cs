@@ -4,12 +4,15 @@ using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.Model.Core;
 using DevExpress.ExpressApp.Updating;
 using DevExpress.ExpressApp.Xpo;
+using DevExpress.Persistent.BaseImpl;
 using DXApplication.Module.Extension;
 
 namespace DXApplication.Blazor;
 
 public sealed class DXApplicationModule : ModuleBase {
     public DXApplicationModule() {
+        AdditionalExportedTypes.Add(typeof(ModelDifference));
+        AdditionalExportedTypes.Add(typeof(ModelDifferenceAspect));
         // 
         // DXApplicationModule
         // 

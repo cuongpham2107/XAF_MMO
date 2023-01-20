@@ -118,3 +118,7 @@ app {
         background-position: calc(0*100%/3) 100%, calc(1*100%/3) 100%, calc(2*100%/3) 100%, calc(3*100%/3) 100%
     }
 }
+
+.dxbl-grid-table td {
+    white-space: nowrap;
+}

@@ -1,6 +1,7 @@
 ﻿using DevExpress.CodeParser;
 using DevExpress.Data;
 using DevExpress.DirectX.Common.DirectWrite;
+using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.Model.Core;
 using DevExpress.ExpressApp.Model.NodeGenerators;
@@ -38,7 +39,7 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
             .Where(bom => bom.Name.Contains("BusinessObjects"))) {
             var type = Type.GetType(modelClass.Name);
             if (type != null) {
-                CustomListView(modelClass, type, viewsNode);
+                CustomRootListView(modelClass, type, viewsNode);
                 CustomNestedListView(modelClass, type, viewsNode);
                 Readonly(modelClass, type);
             }
@@ -111,7 +112,78 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
         }
     }
 
+    /// <summary>
+    /// Xử lý chung cho root và nested list view
+    /// </summary>
+    /// <param name="listviewNode"></param>
+    /// <param name="attr"></param>
+    /// <param name="viewsNode"></param>
+    void CustomListView(IModelListView listviewNode, CustomListViewAttribute attr, ModelNode viewsNode) {
+        //TODO: chỉ định detail view cho list view
+        if (!string.IsNullOrEmpty(attr.DetailViewId)) {
+            var detailView = viewsNode.GetNode(attr.DetailViewId) as IModelDetailView;
+            listviewNode.DetailView = detailView;
+        }
 
+        //TODO: chỉ định group summary
+        listviewNode.GroupSummary = attr.GroupSummary;
+
+        //TODO: chỉ định các tính năng thêm sửa xóa link
+        listviewNode.AllowDelete = attr.AllowDelete;
+        listviewNode.AllowEdit = attr.AllowEdit;
+        listviewNode.AllowNew = attr.AllowNew;
+        listviewNode.AllowLink = attr.AllowLink;
+        listviewNode.AllowUnlink = attr.AllowUnlink;
+
+        //TODO: ẩn các trường
+        foreach (var f in attr.FieldsToHide)
+            listviewNode.Columns[f].Index = -1;
+
+        //TODO: sắp xếp
+        for (var i = 0; i < attr.FieldsToSort.Length; i++) {
+            var field = attr.FieldsToSort[i];
+            if (field.EndsWith(".")) {
+                var f = field.TrimEnd('.');
+                listviewNode.Columns[f].SortIndex = i;
+                listviewNode.Columns[f].SortOrder = ColumnSortOrder.Descending;
+            } else listviewNode.Columns[field].SortIndex = i;
+        }
+
+        //TODO: nhóm cột
+        for (var i = 0; i < attr.FieldsToGroup.Length; i++)
+            listviewNode.Columns[attr.FieldsToGroup[i]].GroupIndex = i;
+
+        //TODO: xóa cột
+        foreach (var f in attr.FieldsToRemove)
+            listviewNode.Columns[f].Remove();
+
+        //TODO: thêm dòng tổng
+        foreach (var field in attr.FieldsToSum) {
+            if (field.Contains(':')) {
+                var items = field.Split(":", StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries);
+                var col = items[0];
+                var sums = items[1].Split(",", StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries);
+                foreach (var s in sums) {
+                    var column = listviewNode.Columns[col];
+                    if (column != null) {
+                        var sum = column.Summary.AddNode<IModelColumnSummaryItem>(s);
+                        sum.SummaryType = s.ToLower() switch {
+                            "count" => SummaryType.Count,
+                            "sum" => SummaryType.Sum,
+                            "average" => SummaryType.Average,
+                            "min" => SummaryType.Min,
+                            "max" => SummaryType.Max,
+                            _ => SummaryType.Count
+                        };
+                    }
+                }
+            } else {
+                var column = listviewNode.Columns[field];
+                var sum = column.Summary.AddNode<IModelColumnSummaryItem>("Count");
+                sum.SummaryType = SummaryType.Count;
+            }
+        }
+    }
 
     /// <summary>
     /// Xử lý CustomListViewAttribute
@@ -119,9 +191,9 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
     /// <param name="modelClass"></param>
     /// <param name="type"></param>
     /// <param name="viewsNode"></param>
-    void CustomListView(IModelClass modelClass, Type type, ModelNode viewsNode) {
-        var attrs = type.GetCustomAttributes(typeof(CustomListViewAttribute));
-        foreach (CustomListViewAttribute attr in attrs.Cast<CustomListViewAttribute>()) {
+    void CustomRootListView(IModelClass modelClass, Type type, ModelNode viewsNode) {
+        var attrs = type.GetCustomAttributes(typeof(CustomRootListViewAttribute));
+        foreach (CustomRootListViewAttribute attr in attrs.Cast<CustomRootListViewAttribute>()) {
             //var attr = type.GetCustomAttribute<CustomListViewAttribute>();
             if (attr != null) {
                 //var bom = viewsNode.Application.BOModel.GetClass(type);
@@ -134,67 +206,11 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
                 }
 
                 if (listviewNode != null) {
-                    listviewNode.GroupSummary = attr.GroupSummary;
-
-                    listviewNode.AllowDelete = attr.AllowDelete;
-                    listviewNode.AllowEdit = attr.AllowEdit;
-                    listviewNode.AllowNew = attr.AllowNew;
-                    listviewNode.AllowLink = attr.AllowLink;
-                    listviewNode.AllowUnlink = attr.AllowUnlink;
-
-                    if (!string.IsNullOrEmpty(attr.DetailViewId)) {
-                        var detailView = viewsNode.GetNode(attr.DetailViewId) as IModelDetailView;
-                        listviewNode.DetailView = detailView;
-                    }
-
-                    foreach (var f in attr.FieldsToHide)
-                        listviewNode.Columns[f].Index = -1;
-
-                    for (var i = 0; i < attr.FieldsToSort.Length; i++) {
-                        var field = attr.FieldsToSort[i];
-                        if (field.EndsWith(".")) {
-                            var f = field.TrimEnd('.');
-                            listviewNode.Columns[f].SortIndex = i;
-                            listviewNode.Columns[f].SortOrder = ColumnSortOrder.Descending;
-                        } else listviewNode.Columns[field].SortIndex = i;
-                    }
-
-                    for (var i = 0; i < attr.FieldsToGroup.Length; i++)
-                        listviewNode.Columns[attr.FieldsToGroup[i]].GroupIndex = i;
-
-                    foreach (var f in attr.FieldsToRemove)
-                        listviewNode.Columns[f].Remove();
-
-                    foreach (var field in attr.FieldsToSum) {
-                        if (field.Contains(':')) {
-                            var items = field.Split(":", StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries);
-                            var col = items[0];
-                            var sums = items[1].Split(",", StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries);
-                            foreach (var s in sums) {
-                                var column = listviewNode.Columns[col];
-                                if (column != null) {
-                                    var sum = column.Summary.AddNode<IModelColumnSummaryItem>(s);
-                                    sum.SummaryType = s.ToLower() switch {
-                                        "count" => SummaryType.Count,
-                                        "sum" => SummaryType.Sum,
-                                        "average" => SummaryType.Average,
-                                        "min" => SummaryType.Min,
-                                        "max" => SummaryType.Max,
-                                        _ => SummaryType.Count
-                                    };
-                                }
-                            }
-                        } else {
-                            var column = listviewNode.Columns[field];
-                            var sum = column.Summary.AddNode<IModelColumnSummaryItem>("Count");
-                            sum.SummaryType = SummaryType.Count;
-                        }
-                    }
+                    CustomListView(listviewNode, attr, viewsNode);
                 }
             }
         }
     }
-
 
     /// <summary>
     /// Xử lý CustomNestedListViewAttribute
@@ -211,63 +227,7 @@ public class ModelNodeController : ModelNodesGeneratorUpdater<ModelViewsNodesGen
                 listviewNode = viewsNode.GetNode(listviewId) as IModelListView;
 
                 if (listviewNode != null) {
-                    //TODO đặt detail view khi click row
-                    if (!string.IsNullOrEmpty(attr.DetailViewId)) {
-                        var detailView = viewsNode.GetNode(attr.DetailViewId) as IModelDetailView;
-                        listviewNode.DetailView = detailView;
-                    }
-
-                    listviewNode.GroupSummary = attr.GroupSummary;
-
-                    listviewNode.AllowDelete = attr.AllowDelete;
-                    listviewNode.AllowEdit = attr.AllowEdit;
-                    listviewNode.AllowNew = attr.AllowNew;
-                    listviewNode.AllowLink = attr.AllowLink;
-                    listviewNode.AllowUnlink = attr.AllowUnlink;
-
-                    foreach (var f in attr.FieldsToHide)
-                        listviewNode.Columns[f].Index = -1;
-
-                    for (var i = 0; i < attr.FieldsToSort.Length; i++) {
-                        var field = attr.FieldsToSort[i];
-                        if (field.EndsWith(".")) {
-                            var f = field.TrimEnd('.');
-                            listviewNode.Columns[f].SortIndex = i;
-                            listviewNode.Columns[f].SortOrder = ColumnSortOrder.Descending;
-                        } else listviewNode.Columns[field].SortIndex = i;
-                    }
-
-                    for (var i = 0; i < attr.FieldsToGroup.Length; i++)
-                        listviewNode.Columns[attr.FieldsToGroup[i]].GroupIndex = i;
-
-                    foreach (var f in attr.FieldsToRemove)
-                        listviewNode.Columns[f].Remove();
-
-                    foreach (var field in attr.FieldsToSum) {
-                        if (field.Contains(':')) {
-                            var items = field.Split(":", StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries);
-                            var col = items[0];
-                            var sums = items[1].Split(",", StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries);
-                            foreach (var s in sums) {
-                                var column = listviewNode.Columns[col];
-                                if (column != null) {
-                                    var sum = column.Summary.AddNode<IModelColumnSummaryItem>(s);
-                                    sum.SummaryType = s.ToLower() switch {
-                                        "count" => SummaryType.Count,
-                                        "sum" => SummaryType.Sum,
-                                        "average" => SummaryType.Average,
-                                        "min" => SummaryType.Min,
-                                        "max" => SummaryType.Max,
-                                        _ => SummaryType.Count
-                                    };
-                                }
-                            }
-                        } else {
-                            var column = listviewNode.Columns[field];
-                            var sum = column.Summary.AddNode<IModelColumnSummaryItem>("Count");
-                            sum.SummaryType = SummaryType.Count;
-                        }
-                    }
+                    CustomListView(listviewNode, attr, viewsNode);                   
                 }
             }
         }

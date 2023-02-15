@@ -25,7 +25,12 @@ public class CustomDetailViewAttribute : Attribute {
     public bool AllowDelete { get; set; } = true;
     public bool AllowNew { get; set; } = true;
 
-    public bool Tabbed { get; set; } = false;
+    public bool Tabbed { get; set; } = false;    
+
+    /// <summary>
+    /// Viết theo chuỗi Json
+    /// </summary>
+    //public string CustomizedViews { get; set;}
 }
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
@@ -119,3 +124,14 @@ public class CustomListViewColumnWidthAttribute : Attribute {
     }
     public string[] ColumnWidths => columnWidths;
 }
+
+//internal class DetailViewStructure {
+//    public string Tab { get; set; }
+//    public string[] Groups { get; set; }
+//}
+
+//internal class ViewCol {
+//    public string Id { get; set; }
+//    public int Size { get; set; }
+//    public string[] Fields { get; set; }
+//}

@@ -23,7 +23,7 @@ public class BlazorListViewController : ViewController<ListView> {
         base.OnViewControlsCreated();
 
         //TODO: điều chỉnh cách hiển thị của DxGridListEditor
-        //if (View.Editor is DxGridListEditor gridListEditor) {
+        //if (View.Editor is DxGridListEditor gridListEditor) {            
         //    IDxGridAdapter dataGridAdapter = gridListEditor.GetGridAdapter();
         //    dataGridAdapter.GridModel.ColumnResizeMode = GridColumnResizeMode.NextColumn;
         //    dataGridAdapter.GridModel.FooterDisplayMode = GridFooterDisplayMode.Auto;
@@ -35,10 +35,10 @@ public class BlazorListViewController : ViewController<ListView> {
         //    dataGridAdapter.GridCommandColumnModel.Visible = true;
         //    dataGridAdapter.GridCommandColumnModel.ShowInColumnChooser = true;
         //    dataGridAdapter.GridSelectionColumnModel.ShowInColumnChooser = true;
-        //    dataGridAdapter.GridSelectionColumnModel.AllowSelectAll = true;
+        //    dataGridAdapter.GridSelectionColumnModel.AllowSelectAll = true;            
         //}
 
-        if (View.Editor.Control is DxGridAdapter adapter) {        
+        if (View.Editor.Control is DxGridAdapter adapter) {
             adapter.GridModel.ColumnResizeMode = GridColumnResizeMode.ColumnsContainer;
             adapter.GridModel.FooterDisplayMode = GridFooterDisplayMode.Auto;
             adapter.GridModel.AutoExpandAllGroupRows = true;
@@ -50,6 +50,7 @@ public class BlazorListViewController : ViewController<ListView> {
             adapter.GridCommandColumnModel.ShowInColumnChooser = true;
             adapter.GridSelectionColumnModel.ShowInColumnChooser = true;
             adapter.GridSelectionColumnModel.AllowSelectAll = true;
+            
 
             var attr = View.ObjectTypeInfo.Type.GetCustomAttribute<CustomListViewColumnWidthAttribute>();
             if (attr != null) {

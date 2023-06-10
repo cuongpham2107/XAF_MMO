@@ -9,11 +9,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Controllers\DetailViewController.cs" />
-    <Compile Remove="Controllers\ListViewController.cs" />
-    <Compile Remove="Controllers\ModelNodeController.cs" />
+    <Compile Remove="Extension\DetailViewController.cs" />
+    <Compile Remove="Extension\ListViewController.cs" />
+    <Compile Remove="Extension\ModelNodeController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="DXApplication.Blazor.Server.csproj.bak" />
     <None Remove="Model.log" />
     <None Remove="Model.xafml" />
   </ItemGroup>
@@ -27,27 +28,21 @@
     <None Include="Templates\MypeNestedFrameTemplateComponent.razor" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DevExpress.ExpressApp.Blazor" Version="22.2.3" />
-    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="22.2.3" />
-    <PackageReference Include="DevExpress.ExpressApp.Dashboards.Blazor" Version="22.2.3" />
-    <PackageReference Include="DevExpress.ExpressApp.FileAttachment.Blazor" Version="22.2.3" />
-    <PackageReference Include="DevExpress.ExpressApp.Office.Blazor" Version="22.2.3" />
-    <PackageReference Include="DevExpress.ExpressApp.ReportsV2.Blazor" Version="22.2.3" />
-    <PackageReference Include="DevExpress.ExpressApp.Security.Xpo" Version="22.2.3" />
-    <PackageReference Include="DevExpress.ExpressApp.Validation.Blazor" Version="22.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.Blazor" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.Dashboards.Blazor" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.FileAttachment.Blazor" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.Office.Blazor" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.ReportsV2.Blazor" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.Security.Xpo" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.Validation.Blazor" Version="22.2.4" />
     <PackageReference Include="MySql.Data" Version="8.0.31" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DXApplication.Module\DXApplication.Module.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="UnusableNodes.xml">
-      <DependentUpon>Model.xafml</DependentUpon>
-    </None>
     <None Update="UnusableNodes1.xml">
-      <DependentUpon>Model.xafml</DependentUpon>
-    </None>
-    <None Update="UnusableNodes2.xml">
       <DependentUpon>Model.xafml</DependentUpon>
     </None>
     <None Update="UnusableNodes3.xml">

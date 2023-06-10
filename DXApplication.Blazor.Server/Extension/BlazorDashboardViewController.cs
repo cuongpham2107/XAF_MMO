@@ -3,7 +3,7 @@ using DevExpress.ExpressApp.Blazor.SystemModule;
 using DevExpress.ExpressApp.Dashboards.Blazor.Controllers;
 using DevExpress.ExpressApp.SystemModule;
 using DevExpress.Persistent.BaseImpl;
-using DXApplication.Blazor.BusinessObjects;
+using DXApplication.Module.BusinessObjects;
 
 namespace DXApplication.Blazor.Server.Controllers;
 

@@ -3,7 +3,7 @@ using DevExpress.ExpressApp.Security;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Xpo;
 
-namespace DXApplication.Blazor.BusinessObjects;
+namespace DXApplication.Module.BusinessObjects;
 
 [DeferredDeletion(false)]
 [Persistent("PermissionPolicyUserLoginInfo")]

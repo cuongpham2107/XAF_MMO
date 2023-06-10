@@ -9,10 +9,10 @@ using DevExpress.Xpo;
 using DevExpress.ExpressApp.Xpo;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
-using DXApplication.Blazor.BusinessObjects;
+using DXApplication.Module.BusinessObjects;
 using DevExpress.ExpressApp.Dashboards;
 
-namespace DXApplication.Blazor.DatabaseUpdate;
+namespace DXApplication.Module.DatabaseUpdate;
 
 // For more typical usage scenarios, be sure to check out https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.Updating.ModuleUpdater
 public class Updater : ModuleUpdater {
@@ -28,7 +28,7 @@ public class Updater : ModuleUpdater {
         //    theObject = ObjectSpace.CreateObject<DomainObject1>();
         //    theObject.Name = name;
         //}
-#if !RELEASE
+
         ApplicationUser sampleUser = ObjectSpace.FirstOrDefault<ApplicationUser>(u => u.UserName == "User");
         if (sampleUser == null) {
             sampleUser = ObjectSpace.CreateObject<ApplicationUser>();
@@ -65,7 +65,7 @@ public class Updater : ModuleUpdater {
         adminRole.IsAdministrative = true;
         userAdmin.Roles.Add(adminRole);
         ObjectSpace.CommitChanges(); //This line persists created object(s).
-#endif
+
     }
     public override void UpdateDatabaseBeforeUpdateSchema() {
         base.UpdateDatabaseBeforeUpdateSchema();

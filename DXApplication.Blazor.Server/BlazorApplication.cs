@@ -1,13 +1,8 @@
 ﻿using DevExpress.ExpressApp;
-using DevExpress.ExpressApp.ApplicationBuilder;
 using DevExpress.ExpressApp.Blazor;
 using DevExpress.ExpressApp.Blazor.Templates;
-using DevExpress.ExpressApp.Security;
-using DevExpress.ExpressApp.Security.ClientServer;
 using DevExpress.ExpressApp.SystemModule;
 using DevExpress.ExpressApp.Templates;
-using DevExpress.ExpressApp.Xpo;
-using DXApplication.Blazor.Server.Services;
 
 namespace DXApplication.Blazor.Server;
 
@@ -20,7 +15,7 @@ public class DXApplicationBlazorApplication : BlazorApplication {
         // TODO: đặt kích thước popup windows bằng 60% bề rộng màn hình
         CustomizeTemplate += (s, e) => {
             if (e.Template is IPopupWindowTemplateSize size) {
-                size.MaxWidth = "70vw"; // bề rộng popup luôn bằng 60% bề rộng khuôn hình
+                size.MaxWidth = "60vw"; // bề rộng popup luôn bằng 60% bề rộng khuôn hình
                 //size.Width = "1000px";
                 //size.MaxHeight = "70vh";
                 //size.Height = "800px";
@@ -30,10 +25,10 @@ public class DXApplicationBlazorApplication : BlazorApplication {
 
     //TODO: sử dụng template tự tạo
     protected override IFrameTemplate CreateDefaultTemplate(TemplateContext context) {
-        if (context == TemplateContext.ApplicationWindow) return new Templates.MypeApplicationWindowTemplate { AboutInfoString = AboutInfo.Instance.GetAboutInfoString(this) };
-        if (context == TemplateContext.NestedFrame) return new Templates.MypeNestedFrameTemplate();
+        if (context == TemplateContext.ApplicationWindow) return new Templates.MypeApplicationWindowTemplate_23x { AboutInfoString = AboutInfo.Instance.GetAboutInfoString(this) };
+        if (context == TemplateContext.NestedFrame) return new Templates.MypeNestedFrameTemplate_23x();
         if (context == TemplateContext.PopupWindow) return new Templates.MypePopupWindowTemplate();
-        if(context == TemplateContext.LogonWindow) return new Templates.MyLogonWindowTemplate();
+        if (context == TemplateContext.LogonWindow) return new Templates.MyLogonWindowTemplate();
         return base.CreateDefaultTemplate(context);
     }
 

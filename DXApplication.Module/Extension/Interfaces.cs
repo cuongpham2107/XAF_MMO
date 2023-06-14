@@ -22,4 +22,3 @@ public interface IListViewPopup { }
 /// Ẩn các controller không cần thiết trên domain component
 /// </summary>
 public interface IDomainComponent { }
-

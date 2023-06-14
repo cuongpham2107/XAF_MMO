@@ -1,5 +1,4 @@
 ﻿using DevExpress.ExpressApp.Actions;
-using DevExpress.XtraSpreadsheet.Model.History;
 using DXApplication.Blazor.BusinessObjects;
 using DXApplication.Module.Extension;
 using System;
@@ -65,5 +64,11 @@ public class SampleController : MypeViewController {
             var item = e.PopupWindowViewCurrentObject as Personnel;
             Application.ShowViewStrategy.ShowMessage($"Selected date: {item.FullName}");
         };
+
+        // import from csv action
+        Import<Division>((record, reader) => {
+            record.Name = reader.GetField("Name");
+            record.Office = reader.GetField("Office");
+        }, "Division");
     }
 }

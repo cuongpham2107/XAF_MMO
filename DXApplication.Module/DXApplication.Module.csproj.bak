@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
     <Deterministic>false</Deterministic>
     <AssemblyVersion>1.0.*</AssemblyVersion>
@@ -9,6 +9,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="BusinessObjects\Example\**" />
+    <EmbeddedResource Remove="BusinessObjects\Example\**" />
+    <None Remove="BusinessObjects\Example\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Shared\Enums.cs" />
+    <Compile Remove="Shared\Interfaces.cs" />
+    <Compile Remove="Controllers\SampleController.cs" />
     <Compile Remove="Controllers\TestController.cs" />
     <Compile Remove="Extension\ApplicationController.cs" />
     <Compile Remove="Extension\CurrentObjectController.cs" />
@@ -43,6 +51,9 @@
     <PackageReference Include="DevExpress.ExpressApp.Xpo" Version="22.2.5" />
     <PackageReference Include="DevExpress.Persistent.Base" Version="22.2.5" />
     <PackageReference Include="DevExpress.Persistent.BaseImpl.Xpo" Version="22.2.5" />
+    <PackageReference Include="Mype.Common" Version="1.0.5" />
+    <PackageReference Include="Mype.ConsoleMvc" Version="1.0.2" />
+    <PackageReference Include="Mype.Mqtt" Version="1.0.12" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resource.Designer.cs">
@@ -56,5 +67,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="UnusableNodes.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+    </None>
   </ItemGroup>
 </Project>

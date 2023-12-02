@@ -60,7 +60,7 @@ public class MypeViewController : ViewController {
 
     /// <summary>
     /// Add items to single choice action
-    /// </summary>
+    /// </summary>    
     protected static void SetSingleChoiceAction(SingleChoiceAction action,
         ChoiceActionItem[] items) {
         action.Items.AddRange(items);
@@ -70,7 +70,7 @@ public class MypeViewController : ViewController {
 
     /// <summary>
     /// Create detail view from object
-    /// </summary>
+    /// </summary>    
     protected DetailView CreateDetailView<T>(T item) where T : class {
         var os = Application.CreateObjectSpace(typeof(T));
         var obj = os.GetObject(item);
@@ -79,7 +79,7 @@ public class MypeViewController : ViewController {
 
     /// <summary>
     /// Create detail view of domain component (picker) from object
-    /// </summary>
+    /// </summary>    
     protected DetailView CreatePickerDetailView<T>(T item) where T : class {
         var npos = (NonPersistentObjectSpace)Application.CreateObjectSpace(typeof(T));
         return Application.CreateDetailView(npos, item);
@@ -87,7 +87,7 @@ public class MypeViewController : ViewController {
 
     /// <summary>
     /// Create detail view of domain component
-    /// </summary>
+    /// </summary>    
     protected DetailView CreatePickerDetailView<T>() where T : class {
         var npos = (NonPersistentObjectSpace)Application.CreateObjectSpace(typeof(T));
         var item = Activator.CreateInstance(typeof(T));
@@ -96,7 +96,7 @@ public class MypeViewController : ViewController {
 
     /// <summary>
     /// Create lookup list view (and return source)
-    /// </summary>
+    /// </summary>    
     protected ListView CreateLookupListView<T>(out CollectionSourceBase source) where T : class {
         var os = Application.CreateObjectSpace(typeof(T));
         var viewId = Application.FindLookupListViewId(typeof(T));
@@ -106,7 +106,7 @@ public class MypeViewController : ViewController {
 
     /// <summary>
     /// Create list view (and return source)
-    /// </summary>
+    /// </summary>    
     protected ListView CreateListView<T>(out CollectionSourceBase source) where T : class {
         var os = Application.CreateObjectSpace(typeof(T));
         var viewId = Application.FindListViewId(typeof(T));
@@ -116,8 +116,8 @@ public class MypeViewController : ViewController {
 
     /// <summary>
     /// Import data from csv data
-    /// </summary>
-    protected void Import(string csvData, Action<CsvReader> action) {
+    /// </summary>    
+    protected void ImportFromValue(string csvData, Action<CsvReader> action) {
         using StringReader stringReader = new(csvData);
         CsvConfiguration config = new(CultureInfo.InvariantCulture) {
             DetectDelimiter = true
@@ -125,12 +125,16 @@ public class MypeViewController : ViewController {
         using CsvReader csvReader = new(stringReader, config);
         csvReader.Read();
         csvReader.ReadHeader();
-        while (csvReader.Read()) {
-            action?.Invoke(csvReader);
+        try {
+            while (csvReader.Read()) {
+                action?.Invoke(csvReader);
+            }
+        } catch {
+            Application.ShowViewStrategy.ShowMessage("Có lỗi trong quá trình import", InformationType.Error);
         }
     }
 
-    protected void Import(FileData fileData, Action<CsvReader> action) {
+    protected void ImportFromFile(FileData fileData, Action<CsvReader> action) {
         Stream stream = new MemoryStream();
         fileData.SaveToStream(stream);
         stream.Position = 0;
@@ -141,12 +145,16 @@ public class MypeViewController : ViewController {
         using CsvReader csvReader = new(streamReader, config);
         csvReader.Read();
         csvReader.ReadHeader();
-        while (csvReader.Read()) {
-            action?.Invoke(csvReader);
+        try {
+            while (csvReader.Read()) {
+                action?.Invoke(csvReader);
+            }
+        } catch (Exception e) {
+            Application.ShowViewStrategy.ShowMessage($"Có lỗi trong quá trình import. {e.Message}", InformationType.Error);
         }
     }
 
-    protected void Import<T>(string csvData, Action<T, CsvReader> action) {
+    protected void ImportFromValue<T>(string csvData, Action<T, CsvReader> action) {
         using StringReader stringReader = new(csvData);
         CsvConfiguration config = new(CultureInfo.InvariantCulture) {
             DetectDelimiter = true
@@ -154,13 +162,17 @@ public class MypeViewController : ViewController {
         using CsvReader csvReader = new(stringReader, config);
         csvReader.Read();
         csvReader.ReadHeader();
-        while (csvReader.Read()) {
-            var record = ObjectSpace.CreateObject<T>();
-            action?.Invoke(record, csvReader);
+        try {
+            while (csvReader.Read()) {
+                var record = ObjectSpace.CreateObject<T>();
+                action?.Invoke(record, csvReader);
+            }
+        } catch (Exception e) {
+            Application.ShowViewStrategy.ShowMessage($"Có lỗi trong quá trình import. {e.Message}", InformationType.Error);
         }
     }
 
-    protected void Import<T>(FileData csvFile, Action<T, CsvReader> action) {
+    protected void ImportFromFile<T>(FileData csvFile, Action<T, CsvReader> action) {
         Stream stream = new MemoryStream();
         csvFile.SaveToStream(stream);
         stream.Position = 0;
@@ -171,13 +183,17 @@ public class MypeViewController : ViewController {
         using CsvReader csvReader = new(streamReader, config);
         csvReader.Read();
         csvReader.ReadHeader();
-        while (csvReader.Read()) {
-            var record = ObjectSpace.CreateObject<T>();
-            action?.Invoke(record, csvReader);
+        try {
+            while (csvReader.Read()) {
+                var record = ObjectSpace.CreateObject<T>();
+                action?.Invoke(record, csvReader);
+            }
+        } catch (Exception e) {
+            Application.ShowViewStrategy.ShowMessage($"Có lỗi trong quá trình import. {e.Message}", InformationType.Error);
         }
     }
 
-    protected void Import<T>(Action<T, CsvReader> operation, string description, CsvImporter viewObject = null, string caption = "Nhập từ csv") {
+    protected void ImportAction<T>(Action<T, CsvReader> operation, string description, CsvImporter viewObject = null, string caption = "Nhập từ csv") {
         var action = CreateAction(ActionType.Popup, caption, description, category: "Tools") as PopupWindowShowAction;
         action.ImageName = "Action_Export_ToCSV";
         action.PaintStyle = ActionItemPaintStyle.Image;
@@ -193,9 +209,9 @@ public class MypeViewController : ViewController {
             var importer = e.PopupWindowViewCurrentObject as CsvImporter;
 
             if (!string.IsNullOrEmpty(importer.Value)) {
-                Import(importer.Value, operation);
+                ImportFromValue(importer.Value, operation);
             } else if (importer.FileData != null) {
-                Import(importer.FileData, operation);
+                ImportFromFile(importer.FileData, operation);
             }
 
             ObjectSpace.CommitChanges();
@@ -203,7 +219,7 @@ public class MypeViewController : ViewController {
         };
     }
 
-    protected void Import<T1, T2>(Action<T1, CsvReader, T2> operation, string description, CsvImporter viewObject = null, string caption = "Nhập từ csv") where T2 : CsvImporter {
+    protected void ImportAction<T1, T2>(Action<T1, CsvReader, T2> operation, string description, CsvImporter viewObject = null, string caption = "Nhập từ csv") where T2 : CsvImporter {
         var action = CreateAction(ActionType.Popup, caption, description, category: "Tools") as PopupWindowShowAction;
         action.ImageName = "Action_Export_ToCSV";
         action.PaintStyle = ActionItemPaintStyle.Image;
@@ -219,13 +235,28 @@ public class MypeViewController : ViewController {
             var importer = e.PopupWindowViewCurrentObject as T2;
 
             if (!string.IsNullOrEmpty(importer.Value)) {
-                Import<T1>(importer.Value, (i, r) => operation?.Invoke(i, r, importer));
+                ImportFromValue<T1>(importer.Value, (i, r) => operation?.Invoke(i, r, importer));
             } else if (importer.FileData != null) {
-                Import<T1>(importer.FileData, (i, r) => operation?.Invoke(i, r, importer));
+                ImportFromFile<T1>(importer.FileData, (i, r) => operation?.Invoke(i, r, importer));
             }
 
             ObjectSpace.CommitChanges();
             View.RefreshDataSource();
         };
+    }
+
+    protected virtual void Get<T>(string name, CsvReader r, Action<T> a) {
+        if (r.TryGetField<T>(name, out T value)) a.Invoke(value);
+    }
+
+    protected virtual FileData CreateFile(string fileName, Action<StreamWriter> action) {
+        var file = ObjectSpace.CreateObject<FileData>();
+        MemoryStream ms = new();
+        StreamWriter sw = new(ms) { AutoFlush = true };
+        action.Invoke(sw);
+        ms.Position = 0;
+        file.LoadFromStream(fileName, ms);
+        sw.Close();
+        return file;
     }
 }

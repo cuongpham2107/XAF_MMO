@@ -1,17 +1,127 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application Title="DXApplication">
+  <ActionDesign>
+    <Actions>
+      <Action Id="DXApplication.Module.Controllers.DriverController-Authenticate-" ImageName="Action_Security_ChangePassword" />
+      <Action Id="DXApplication.Module.Controllers.ProfileController-Đóng Profile-" ImageName="State_Validation_Invalid" />
+      <Action Id="DXApplication.Module.Controllers.ProfileController-Run Profile-" ImageName="Action_ResumeRecording" />
+      <Action Id="DXApplication.Module.Controllers.ProfileController-Thêm Gmail-" ImageName="MailMerge" />
+    </Actions>
+  </ActionDesign>
   <BOModel>
     <Class Name="DevExpress.Persistent.BaseImpl.PermissionPolicy.PermissionPolicyUser" Caption="Base User" />
+    <Class Name="DXApplication.Module.BusinessObjects.Gmail">
+      <AppearanceRules>
+        <AppearanceRule Id="Dead" Criteria="[Status] = ##Enum#DXApplication.Module.BusinessObjects.GmailStatus,Dead#" BackColor="Red" FontColor="Black" TargetItems="Status" IsNewNode="True" />
+        <AppearanceRule Id="Live" BackColor="DodgerBlue" />
+      </AppearanceRules>
+    </Class>
+    <Class Name="DXApplication.Module.BusinessObjects.Profile">
+      <AppearanceRules>
+        <AppearanceRule Id="Running" BackColor="LightSkyBlue" FontColor="Black" Context="ListView" Criteria="[Status] = ##Enum#DXApplication.Module.BusinessObjects.Profile+StatusProfile,Running#" TargetItems="Status" IsNewNode="True" />
+        <AppearanceRule Id="Stop" BackColor="Brown" FontColor="White" Context="ListView" Criteria="[Status] = ##Enum#DXApplication.Module.BusinessObjects.Profile+StatusProfile,Stop#" TargetItems="Status" IsNewNode="True" />
+      </AppearanceRules>
+    </Class>
   </BOModel>
+  <NavigationItems>
+    <Items>
+      <Item Id="Nghiệp vụ" Index="1">
+        <Items>
+          <Item Id="Configuration_ListView" ViewId="Configuration_DetailView" />
+        </Items>
+      </Item>
+      <Item Id="Dữ liệu">
+        <Items>
+          <Item Id="Channels_ListView" ImageName="ListBullets" />
+          <Item Id="Comments_ListView" ImageName="TextDirectionHorizontal" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
   <Options>
     <LayoutManagerOptions RequiredFieldMark="*" />
   </Options>
   <SchemaModules>
-    <SchemaModule Name="CloneObjectModule" Version="22.2.3.0" IsNewNode="True" />
-    <SchemaModule Name="SystemModule" Version="22.2.3.0" IsNewNode="True" />
+    <SchemaModule Name="CloneObjectModule" Version="23.1.3.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="23.1.3.0" IsNewNode="True" />
   </SchemaModules>
   <Views>
     <ListView Id="ApplicationUser_ListView" Caption="Users" />
-    <ListView Id="Personnel_ListView" NewItemRowPosition="Bottom" />
+    <DetailView Id="Driver_DetailView">
+      <Items>
+        <PropertyEditor Id="HightScreen" DisplayFormat="d" />
+        <PropertyEditor Id="MqttPort" DisplayFormat="d" />
+        <PropertyEditor Id="WidthScreen" DisplayFormat="d" />
+      </Items>
+      <Layout>
+        <TabbedGroup Id="Tabs" Index="0" RelativeSize="100">
+          <LayoutGroup Id="Main" RelativeSize="100">
+            <LayoutGroup Id="Detail" RelativeSize="100" Caption="Thông tin Driver">
+              <LayoutGroup Id="Detail_col1" RelativeSize="49.74747474747475">
+                <LayoutItem Id="DisplayName" RelativeSize="5.992509363295881" />
+                <LayoutItem Id="MachineName" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="Ip" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="DefaultProxyProfile" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="ProfileCount" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="Status" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="MqttUri" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="MqttPort" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="WidthScreen" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="HightScreen" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="ApiBaseUrl" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="ApiCreateProfile" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="ApiUpdateProfile" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="ApiDeleteProfile" ViewItem="ApiDeleteProfile" Index="14" RelativeSize="35.58052434456929" IsNewNode="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="Detail_col2" RelativeSize="50.25252525252525">
+                <LayoutItem Id="DefaultWorkingPath" Index="0" RelativeSize="5.992509363295881" />
+                <LayoutItem Id="DefaultGologinPath" Index="1" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="PathOrbita" Index="2" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="PathProfile" Index="3" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="PathCookieExtension" Index="4" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="PathPasswordExtension" Index="5" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="PathProxyExtension" Index="6" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="GologinAccount" Index="7" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="ChromeCommandLine" Index="8" RelativeSize="47.56554307116105" />
+                <LayoutItem Id="PathSlave" Index="9" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="PathWorker" Index="10" RelativeSize="4.49438202247191" />
+                <LayoutItem Id="DriverIdFile" Index="11" RelativeSize="5.992509363295881" />
+                <LayoutItem Id="ApiDeleteProfile" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="Profiles" RelativeSize="100">
+            <LayoutItem Id="Profiles" RelativeSize="100" />
+          </LayoutGroup>
+          <LayoutGroup Id="Keywords" RelativeSize="100">
+            <LayoutItem Id="Keywords" RelativeSize="100" />
+          </LayoutGroup>
+          <LayoutGroup Id="Urls" RelativeSize="100">
+            <LayoutItem Id="Urls" RelativeSize="100" />
+          </LayoutGroup>
+          <LayoutGroup Id="Channels" RelativeSize="100">
+            <LayoutItem Id="Channels" RelativeSize="100" />
+          </LayoutGroup>
+          <LayoutGroup Id="Comments" RelativeSize="100">
+            <LayoutItem Id="Comments" RelativeSize="100" />
+          </LayoutGroup>
+          <LayoutGroup Id="Icons" RelativeSize="100">
+            <LayoutItem Id="Icons" RelativeSize="100" />
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Driver_ListView">
+      <Columns>
+        <ColumnInfo Id="HightScreen" Index="-1" />
+        <ColumnInfo Id="MqttPort" Index="-1" />
+        <ColumnInfo Id="MqttUri" Index="-1" />
+        <ColumnInfo Id="PathSlave" Index="-1" />
+        <ColumnInfo Id="PathWorker" Index="-1" />
+        <ColumnInfo Id="WidthScreen" Index="-1" />
+        <ColumnInfo Id="GologinAccount" Index="5" />
+        <ColumnInfo Id="DriverIdFile" Index="6" />
+      </Columns>
+    </ListView>
   </Views>
 </Application>

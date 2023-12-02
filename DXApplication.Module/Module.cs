@@ -1,4 +1,5 @@
-﻿using DevExpress.ExpressApp;
+﻿using Mype.Common;
+using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.Model.Core;
@@ -6,6 +7,9 @@ using DevExpress.ExpressApp.Updating;
 using DevExpress.ExpressApp.Xpo;
 using DevExpress.Persistent.BaseImpl;
 using DXApplication.Module.Extension;
+using Mype.Mqtt;
+using Mype.Mqtt.Managed;
+using Mype.Mqtt.Rpc;
 
 namespace DXApplication.Blazor;
 
@@ -35,6 +39,8 @@ public sealed class DXApplicationModule : ModuleBase {
         RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.StateMachine.StateMachineModule));
         RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.Validation.ValidationModule));
         RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.ViewVariantsModule.ViewVariantsModule));
+
+        Mqtt.RunAsync().Wait();
     }
 
     public override void AddGeneratorUpdaters(ModelNodesGeneratorUpdaters updaters) {
@@ -65,4 +71,27 @@ public sealed class DXApplicationModule : ModuleBase {
         base.Setup(application);
         // Manage various aspects of the application UI and behavior at the module level.        
     }
+
+
 }
+
+public static class Mqtt {
+    static readonly ManagedPublisher publisher;
+    static readonly RpcCommander commander;
+    static readonly MqttConfig mqtt = ConfigManager<MqttConfig>.Instance.Config;
+
+    public static ManagedPublisher Publisher => publisher;
+    public static RpcCommander Commander => commander;
+
+    public static async System.Threading.Tasks.Task RunAsync() {
+        await commander.StartCommanding();
+        await publisher.StartAsync();
+    }
+
+    static Mqtt() {
+        var client = ManagedClientBase.CreateManagedMqttClient();
+        publisher = new(client, mqtt);
+        commander = new(mqtt, client);
+    }
+}
+

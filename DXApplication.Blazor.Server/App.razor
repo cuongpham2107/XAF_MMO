@@ -1,4 +1,7 @@
-﻿<Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="new[] { typeof(DevExpress.ExpressApp.Blazor.BlazorApplication).Assembly }">
+﻿@implements ISupportInvokeAsync
+@inject SynchronizationContextHelper SynchronizationContextHelper
+
+<Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="new[] { typeof(DevExpress.ExpressApp.Blazor.BlazorApplication).Assembly }">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" />
     </Found>
@@ -9,3 +12,15 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    protected override void OnAfterRender(bool firstRender) {
+        base.OnAfterRender(firstRender);
+        if (firstRender) {
+            SynchronizationContextHelper.Initialize(this);
+        }
+    }
+    async Task ISupportInvokeAsync.InvokeAsync(Func<Task> action) {
+        await InvokeAsync(action); // inherited from ComponentBase
+    }
+}

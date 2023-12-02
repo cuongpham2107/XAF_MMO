@@ -122,3 +122,9 @@ app {
 .dxbl-grid-table td {
     white-space: nowrap;
 }
+
+.dxbl-fl .dxbl-fl-cpt
+{
+    color: black;
+    font-weight: 500;
+}

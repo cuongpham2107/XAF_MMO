@@ -59,14 +59,14 @@ public class TextPicker : IDomainComponent {
 public class FilePicker : IDomainComponent {
 
     [XafDisplayName("Chọn file")]
-    public FileData File { get; set; }
+    public FileData? File { get; set; }
 }
 
 [DomainComponent]
 [XafDisplayName("Nhập dữ liệu")]
 public class CsvImporter : IDomainComponent {
     [XafDisplayName("Chọn file")]
-    public FileData FileData { get; set; }
+    public FileData? FileData { get; set; }
 
     [XafDisplayName("Dữ liệu")]
     [FieldSize(FieldSizeAttribute.Unlimited)]

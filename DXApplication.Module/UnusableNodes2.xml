@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <ActionDesign Id="ActionDesign">
+    <Actions Id="Actions">
+      <Action Id="DXApplication.Module.Controllers.DriverController-Create DriverId-" ImageName="Actions_AddCircled" />
+      <Action Id="DXApplication.Module.Controllers.DriverController-Create Profile-" ImageName="SnapInsertHeader" />
+      <Action Id="DXApplication.Module.Controllers.DriverController-Set Config-" ImageName="Action_LinkUnlink_Unlink" />
+    </Actions>
+  </ActionDesign>
+  <Views Id="Views">
+    <DetailView Id="Driver_DetailView">
+      <Layout Id="Layout">
+        <TabbedGroup Id="Tabs">
+          <LayoutGroup Id="Main">
+            <LayoutGroup Id="Detail">
+              <LayoutGroup Id="Detail_col1">
+                <LayoutItem Id="ApiStartProfile" Index="13" RelativeSize="4.49438202247191" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>

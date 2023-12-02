@@ -16,6 +16,9 @@ public class Program : IDesignTimeApplicationFactory {
         // TODO: không hiển thị mục menu My Detail trong thanh Navigation
         //MyDetailsController.CanGenerateMyDetailsNavigationItem = false; 
 
+        // TODO: tạo key ngẫu nhiên cho hệ thống
+        Module.Common.Extension.CreateKey();
+
         if (ContainsArgument(args, "help") || ContainsArgument(args, "h")) {
             Console.WriteLine("Updates the database when its version does not match the application's version.");
             Console.WriteLine();
@@ -27,16 +30,14 @@ public class Program : IDesignTimeApplicationFactory {
             Console.WriteLine($"Exit codes: 0 - {DBUpdaterStatus.UpdateCompleted}");
             Console.WriteLine($"            1 - {DBUpdaterStatus.UpdateError}");
             Console.WriteLine($"            2 - {DBUpdaterStatus.UpdateNotNeeded}");
-        }
-        else {
+        } else {
             DevExpress.ExpressApp.FrameworkSettings.DefaultSettingsCompatibilityMode = DevExpress.ExpressApp.FrameworkSettingsCompatibilityMode.Latest;
             IHost host = CreateHostBuilder(args).Build();
-            if(ContainsArgument(args, "updateDatabase")) {
-                using(var serviceScope = host.Services.CreateScope()) {
+            if (ContainsArgument(args, "updateDatabase")) {
+                using (var serviceScope = host.Services.CreateScope()) {
                     return serviceScope.ServiceProvider.GetRequiredService<DevExpress.ExpressApp.Utils.IDBUpdater>().Update(ContainsArgument(args, "forceUpdate"), ContainsArgument(args, "silent"));
                 }
-            }
-            else {
+            } else {
                 host.Run();
             }
         }
